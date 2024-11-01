@@ -1,15 +1,10 @@
-import 'package:finalproject/core/usecases/strings/strings.dart';
+import 'package:finalproject/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class PageViewWithDots extends StatefulWidget {
-  const PageViewWithDots({super.key});
-
-  @override
-  _PageViewWithDotsState createState() => _PageViewWithDotsState();
-}
-
-class _PageViewWithDotsState extends State<PageViewWithDots> {
+class PageViewWithDots extends StatelessWidget {
+  PageViewWithDots({super.key, required this.state});
+  final CategoryInitialFetchingState state;
   final PageController _controller = PageController();
 
   @override
@@ -18,25 +13,21 @@ class _PageViewWithDotsState extends State<PageViewWithDots> {
       children: [
         SizedBox(
           height: 160,
-          child: PageView(
+          child: PageView.builder(
             controller: _controller,
-            onPageChanged: (index) {
-              setState(() {});
-            },
-            children: List.generate(5, (index) {
-              return Container(
-                child: Image.asset(
-                  offers[index],
-                  fit: BoxFit.fill,
-                ),
+            itemCount: state.offers.length, // use offers length dynamically
+            itemBuilder: (context, index) {
+              return Image.network(
+                state.offers[index],
+                fit: BoxFit.fill,
               );
-            }),
+            },
           ),
         ),
         const SizedBox(height: 10),
         SmoothPageIndicator(
           controller: _controller,
-          count: 5,
+          count: state.offers.length,
           effect: const WormEffect(
             dotHeight: 8,
             dotWidth: 8,
@@ -46,11 +37,5 @@ class _PageViewWithDotsState extends State<PageViewWithDots> {
         ),
       ],
     );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 }

@@ -38,13 +38,7 @@ const signUpBackground = 'assets/images/signupBackground.jpg';
 const forgetPasswordbackground = 'assets/images/forgetpassbackground.jpg';
 
 const emailVerifiedbackground = 'assets/images/emailverifiedback.jpg';
-const List<String> offers = [
-  'assets/images/offer1.png',
-  'assets/images/offer2.png',
-  'assets/images/offer6.png',
-  'assets/images/offer3.png',
-  'assets/images/offer4.png',
-];
+
 const adidas = 'assets/images/adidas.avif';
 const nike = 'assets/images/nike1.png';
 const puma = 'assets/images/puma.avif';

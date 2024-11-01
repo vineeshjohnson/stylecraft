@@ -17,11 +17,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       String username = await userName();
       String image = await images();
       List<String> brands = await getAllBrandNames();
+      List<String> offers = await _fetchBannerUrls();
       emit(CategoryInitialFetchingState(
           categorymodel: fetchCategories(),
           username: username,
           image: image,
-          brands: brands));
+          brands: brands,
+          offers: offers));
     });
   }
 }
@@ -77,4 +79,13 @@ Future<List<String>> getAllBrandNames() async {
   }).toList();
 
   return brandNames.toSet().toList();
+}
+
+Future<List<String>> _fetchBannerUrls() async {
+  DocumentReference offerBannerRef =
+      FirebaseFirestore.instance.collection('offerbanner').doc('banners');
+  DocumentSnapshot snapshot = await offerBannerRef.get();
+
+  List<dynamic> banners = snapshot.exists ? (snapshot['banner'] ?? []) : [];
+  return List<String>.from(banners);
 }

@@ -30,7 +30,14 @@ class HomePage extends StatelessWidget {
                     const AddressShowingwidget(),
                     categoryShowing(state),
                     kheight10,
-                    const PageViewWithDots(),
+                    PageViewWithDots(
+                      state: CategoryInitialFetchingState(
+                          categorymodel: state.categorymodel,
+                          username: state.username,
+                          image: state.image,
+                          brands: state.brands,
+                          offers: state.offers),
+                    ),
                     kheight20,
                     const BrandBanner(),
                     kheight20,
