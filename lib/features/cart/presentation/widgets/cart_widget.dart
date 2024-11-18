@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finalproject/core/models/product_model.dart';
 import 'package:finalproject/features/cart/presentation/bloc/cart_fav_bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -86,21 +84,21 @@ class CartListTile extends StatelessWidget {
   }
 }
 
-Future<void> incrementProductById(
-    String productId, Map<String, dynamic> updatedValues) async {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  final String userId = auth.currentUser!.uid;
+// Future<void> incrementProductById(
+//     String productId, Map<String, dynamic> updatedValues) async {
+//   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+//   final FirebaseAuth auth = FirebaseAuth.instance;
+//   final String userId = auth.currentUser!.uid;
 
-  try {
-    // Reference to the user's document
-    DocumentReference userDocRef = firestore.collection('users').doc(userId);
+//   try {
+//     // Reference to the user's document
+//     DocumentReference userDocRef = firestore.collection('users').doc(userId);
 
-    // Update the specific product count in the 'cart2' map
-    await userDocRef.update({'cart2.$productId': updatedValues[productId]});
+//     // Update the specific product count in the 'cart2' map
+//     await userDocRef.update({'cart2.$productId': updatedValues[productId]});
 
-    print('Product updated successfully!');
-  } catch (e) {
-    print('Error updating product: $e');
-  }
-}
+//     print('Product updated successfully!');
+//   } catch (e) {
+//     print('Error updating product: $e');
+//   }
+// }

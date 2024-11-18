@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
 class CommonButton extends StatelessWidget {
-  const CommonButton({
-    super.key,
-    required GlobalKey<FormState> formKey,
-    required this.onTap,
-    required this.buttonTxt,
-  }) : _formKey = formKey;
+  const CommonButton(
+      {super.key,
+      required GlobalKey<FormState> formKey,
+      required this.onTap,
+      required this.buttonTxt,
+      this.color})
+      : _formKey = formKey;
 
   final GlobalKey<FormState> _formKey;
   final VoidCallback onTap;
   final String buttonTxt;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class CommonButton extends StatelessWidget {
       },
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(vertical: 15.0),
-        backgroundColor: Colors.black26,
+        backgroundColor: color ?? Colors.black26,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),

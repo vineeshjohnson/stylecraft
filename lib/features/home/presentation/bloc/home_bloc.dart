@@ -18,12 +18,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       String image = await images();
       List<String> brands = await getAllBrandNames();
       List<String> offers = await _fetchBannerUrls();
+      List<String> address = await fetchCurrentUserAddresses();
       emit(CategoryInitialFetchingState(
           categorymodel: fetchCategories(),
           username: username,
           image: image,
           brands: brands,
-          offers: offers));
+          offers: offers,
+          address: address));
     });
   }
 }
@@ -88,4 +90,34 @@ Future<List<String>> _fetchBannerUrls() async {
 
   List<dynamic> banners = snapshot.exists ? (snapshot['banner'] ?? []) : [];
   return List<String>.from(banners);
+}
+
+Future<List<String>> fetchCurrentUserAddresses() async {
+  try {
+    // Get the currently signed-in user
+    User? currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser == null) {
+      print("No user is signed in.");
+      return [];
+    }
+
+    // Fetch the user's document from the 'users' collection using their UID
+    final userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser.uid)
+        .get();
+
+    // Check if the document exists and contains the address field
+    if (userDoc.exists && userDoc.data()!.containsKey('address')) {
+      List<String> addresses = List<String>.from(userDoc['address']);
+      return addresses;
+    } else {
+      print("No addresses found for this user.");
+      return [];
+    }
+  } catch (e) {
+    print("Error fetching addresses: $e");
+    return []; // Return an empty list in case of an error
+  }
 }

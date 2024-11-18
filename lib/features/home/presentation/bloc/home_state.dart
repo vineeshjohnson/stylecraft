@@ -15,12 +15,14 @@ class CategoryInitialFetchingState extends HomeState {
       required this.username,
       required this.image,
       required this.brands,
-      required this.offers});
+      required this.offers,
+      required this.address});
   final Future<List<CategoryModel>> categorymodel;
   final String username;
   final String image;
   final List<String> brands;
   final List<String> offers;
+  final List<String> address;
 }
 
 class ProductInitialFetchingState extends HomeState {

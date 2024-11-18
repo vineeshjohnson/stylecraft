@@ -23,6 +23,7 @@ class AlternativeProductWidget extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
+          color: Colors.white,
           border: Border.all(color: Colors.blueAccent), // Border styling
           borderRadius: BorderRadius.circular(10), // Rounded corners
         ),

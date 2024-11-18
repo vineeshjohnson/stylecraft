@@ -161,7 +161,8 @@ class RegistrationScreen extends StatelessWidget {
                                       name: nameController.text,
                                       phone: mobileController.text,
                                       password: passwordController.text,
-                                      uid: DateTime.now().toString());
+                                      uid: DateTime.now().toString(),
+                                      address: []);
 
                                   authbloc
                                       .add(SignUpEvent(userModel: userModel));

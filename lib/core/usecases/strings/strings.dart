@@ -2,6 +2,8 @@
 
 //splash screen
 
+import 'package:flutter/material.dart';
+
 const splashback = 'assets/images/splashbackground.jpg';
 const splash = 'assets/images/logo.png';
 
@@ -64,3 +66,13 @@ String font2 = 'NewAmsterdam';
 String font3 = 'Montserrat';
 String font4 = 'AfacadFlux-SemiBold';
 String font5 = 'LondrinaSketch-Regular';
+
+TextStyle addressstyle =
+    const TextStyle(fontSize: 17, fontWeight: FontWeight.bold);
+
+String rupee = '\u20B9';
+
+String publishablekey =
+    'pk_test_51QLiAELhpSraLzCLaSEDlHx1VFA5fkSpNuJBLYrOAImGXG2GBos9g7K54crtEZiv8T0b2S3r0Gb1kZMH3HoLwZMG00RPtRnEt6';
+String secretkey =
+    'sk_test_51QLiAELhpSraLzCLVvk10iIOlIT8lQrNaAUL8LjDuPgdwDKsU5eBMUugmWd19zn1tFtfm28ckmlPEbZLaFmNYcEq00I7uut2jO';

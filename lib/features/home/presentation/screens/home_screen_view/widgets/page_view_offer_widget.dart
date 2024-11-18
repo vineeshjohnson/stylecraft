@@ -31,7 +31,7 @@ class PageViewWithDots extends StatelessWidget {
           effect: const WormEffect(
             dotHeight: 8,
             dotWidth: 8,
-            activeDotColor: Colors.black,
+            activeDotColor: Colors.blue,
             dotColor: Colors.grey,
           ),
         ),

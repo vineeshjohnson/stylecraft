@@ -57,12 +57,18 @@ PreferredSize appBarFunction(CategoryInitialFetchingState state) {
   return PreferredSize(
     preferredSize: const Size(5, 70),
     child: AppBar(
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.menu,
-            color: Colors.black,
-          ),
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/images/logo.png',
+              height: 110,
+              width: 110,
+            ),
+            Text(
+              'STYLE CRAFT',
+              style: TextStyle(fontFamily: font5, fontSize: 20),
+            ),
+          ],
         ),
         shadowColor: Colors.black,
         scrolledUnderElevation: 10,
@@ -74,7 +80,7 @@ PreferredSize appBarFunction(CategoryInitialFetchingState state) {
                 CircleAvatar(
                   radius: 18,
                   backgroundImage: state.image.isEmpty
-                      ? const AssetImage(signUpBackground)
+                      ? const AssetImage('assets/images/nouser.jpeg')
                       : NetworkImage(state.image),
                 ),
                 Text(

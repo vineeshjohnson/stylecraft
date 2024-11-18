@@ -7,15 +7,16 @@ class UserModel {
   String? phone;
   String? uid;
   String? imagepath;
+  List<String>? address;
 
-  UserModel({
-    this.name,
-    this.email,
-    this.password,
-    this.phone,
-    this.uid,
-    this.imagepath,
-  });
+  UserModel(
+      {this.name,
+      this.email,
+      this.password,
+      this.phone,
+      this.uid,
+      this.imagepath,
+      this.address});
 
   // Factory method to create a UserModel from Firestore DocumentSnapshot
   factory UserModel.fromFirestore(DocumentSnapshot doc) {

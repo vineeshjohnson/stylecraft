@@ -10,6 +10,21 @@ BottomAppBar buttonForTotal(CartFetchedState state) {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
+          child: Container(
+            height: 90,
+            width: 180,
+            color: Colors.blueAccent,
+            child: Center(
+                child: Text(
+              'Total Amount \u20B9 ${state.totalprice.toString()}',
+              style: const TextStyle(fontSize: 16),
+            )),
+          ),
+        ),
+        const SizedBox(
+          width: 15,
+        ),
+        Expanded(
           child: ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
@@ -17,9 +32,9 @@ BottomAppBar buttonForTotal(CartFetchedState state) {
               padding: const EdgeInsets.symmetric(vertical: 18),
               backgroundColor: Colors.orange,
             ),
-            child: Text(
-              'Total Amount \u20B9 ${state.totalprice.toString()}',
-              style: const TextStyle(fontSize: 16),
+            child: const Text(
+              'Check Out',
+              style: TextStyle(fontSize: 16),
             ),
           ),
         ),

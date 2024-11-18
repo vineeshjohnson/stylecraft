@@ -1,8 +1,9 @@
 import 'package:finalproject/features/bottom_nav/presentation/bloc/bottomnavcontrole_bloc.dart';
 import 'package:finalproject/features/bottom_nav/presentation/widgets/bottom_navbar_widget.dart';
 import 'package:finalproject/features/cart/presentation/widgets/tabbar.dart';
-import 'package:finalproject/features/home/presentation/screens/home_screen.dart';
 import 'package:finalproject/features/home/presentation/screens/home_screen_view/home_view.dart';
+import 'package:finalproject/features/user_orders/presentation/screens/orders_tabbar.dart';
+import 'package:finalproject/trial_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,9 +25,9 @@ class BottomNavigationBars extends StatelessWidget {
           } else if (state is BottomnavcontroleShopState) {
             widget = const FavoritesAndCartPage();
           } else if (state is BottomnavcontroleCartState) {
-            widget = const HomePage();
+            widget = const UserOrdersPage();
           } else if (state is BottomnavcontroleProfileState) {
-            widget = const HomeScreen();
+            widget = const BrandProductsScreen();
           }
           return Scaffold(
             body: widget,
