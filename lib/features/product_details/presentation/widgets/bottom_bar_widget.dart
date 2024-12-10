@@ -1,18 +1,22 @@
-import 'package:finalproject/core/models/product_model.dart';
-import 'package:finalproject/core/usecases/common_widgets/sized_box.dart';
-import 'package:finalproject/core/usecases/strings/strings.dart';
-import 'package:finalproject/features/cart/presentation/screens/cart_screen/functions.dart';
-import 'package:finalproject/features/order/presentation/screens/order_with_address.dart';
-import 'package:finalproject/features/product_details/presentation/bloc/product_detail_bloc.dart';
+import 'package:finalproject/features/product_details/presentation/screens/product_details.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:finalproject/core/models/product_model.dart';
+import 'package:finalproject/features/order/presentation/screens/order_with_address.dart';
+
+import '../bloc/product_detail_bloc.dart';
 
 class BottomAppbarWidget extends StatelessWidget {
-  const BottomAppbarWidget(
-      {super.key, required this.productModel, required this.state});
+  const BottomAppbarWidget({
+    super.key,
+    required this.productModel,
+    required this.state,
+    required this.bloc,
+  });
 
   final ProductModel productModel;
   final ProductDetailsFetchedState state;
+  final ProductDetailBloc bloc;
+
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
@@ -22,9 +26,34 @@ class BottomAppbarWidget extends StatelessWidget {
           Expanded(
             child: ElevatedButton(
               onPressed: () {
-                context
-                    .read<ProductDetailBloc>()
-                    .add(AddToCartEvent(productid: productModel.productId!));
+                var sizes = getsizelist(productModel);
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
+                  ),
+                  builder: (context) => _buildSizeSelectorSheet(
+                    context: context,
+                    sizes: sizes,
+                    onSizeSelected: (selectedSize) {
+                      bloc.add(AddToCartEvent(
+                        productid: productModel.productId!,
+                        size: selectedSize,
+                      ));
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) =>
+                              ProductDetails(productModel: productModel)));
+                    },
+                  ),
+                ).then((_) {
+                  // Trigger the event when the bottom sheet is dismissed
+                  bloc.add(
+                      ProductDetailsFetchEvent(productmodel: productModel));
+                });
               },
               style: ElevatedButton.styleFrom(
                 shape: const RoundedRectangleBorder(),
@@ -46,54 +75,33 @@ class BottomAppbarWidget extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 var sizes = getsizelist(productModel);
-                showBottomSheet(
-                    sheetAnimationStyle:
-                        AnimationStyle(duration: const Duration(seconds: 1)),
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
+                  ),
+                  builder: (context) => _buildSizeSelectorSheet(
                     context: context,
-                    builder: (context) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            decoration: const BoxDecoration(color: Colors.grey),
-                            height: 150,
-                            width: double.infinity,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Select A Size',
-                                  style: addressstyle,
-                                ),
-                                kheight20,
-                                Expanded(
-                                  child: GridView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) =>
-                                        GestureDetector(
-                                            onTap: () {
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          OrderWithAddress(
-                                                            size: sizes[index],
-                                                            product:
-                                                                productModel,
-                                                          )));
-                                            },
-                                            child: sizeChip(sizes[index])),
-                                    itemCount: sizes.length,
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 1),
-                                  ),
-                                )
-                              ],
-                            ),
+                    sizes: sizes,
+                    onSizeSelected: (selectedSize) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => OrderWithAddress(
+                            size: selectedSize,
+                            product: productModel,
                           ),
-                        ));
-                // Navigator.of(context).push(MaterialPageRoute(
-                //     builder: (context) => OrderWithAddress(
-                //           product: productModel,
-                //         )));
+                        ),
+                      );
+                    },
+                  ),
+                ).then((_) {
+                  // Trigger the event when the bottom sheet is dismissed
+                  bloc.add(
+                      ProductDetailsFetchEvent(productmodel: productModel));
+                });
               },
               style: ElevatedButton.styleFrom(
                 shape: const RoundedRectangleBorder(),
@@ -110,14 +118,87 @@ class BottomAppbarWidget extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildSizeSelectorSheet({
+    required BuildContext context,
+    required List<String> sizes,
+    required Function(String selectedSize) onSizeSelected,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text(
+            'Select a Size',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 16),
+          GridView.builder(
+            shrinkWrap: true,
+            itemCount: sizes.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 2,
+            ),
+            itemBuilder: (context, index) => GestureDetector(
+              onTap: () => onSizeSelected(sizes[index]),
+              child: Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade50,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Colors.blue.shade300,
+                    width: 1,
+                  ),
+                ),
+                child: Text(
+                  sizes[index],
+                  style: const TextStyle(
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.redAccent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 List<String> getsizelist(ProductModel model) {
   List<String> sizes = [];
   if (model.small) sizes.add("Small");
-  if (model.medium) sizes.add("medium");
-  if (model.large) sizes.add("large");
-  if (model.xl) sizes.add("xl");
-  if (model.xxl) sizes.add("xxl");
+  if (model.medium) sizes.add("Medium");
+  if (model.large) sizes.add("Large");
+  if (model.xl) sizes.add("XL");
+  if (model.xxl) sizes.add("XXL");
   return sizes;
 }

@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
-class CompletedOrders extends StatelessWidget {
-  const CompletedOrders({super.key});
+class CancelledOrders extends StatelessWidget {
+  const CancelledOrders({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class CompletedOrders extends StatelessWidget {
 
     return BlocProvider(
       create: (context) =>
-          UserordersBloc()..add(CompletedUserOrdersFetchingEvent()),
+          UserordersBloc()..add(CancelledUserOrdersFetchingEvent()),
       child: BlocConsumer<UserordersBloc, UserordersState>(
         listenWhen: (previous, current) {
           if (previous == current) {
@@ -159,9 +159,9 @@ class CompletedOrders extends StatelessWidget {
                                                 border: Border.all()),
                                             height: 35,
                                             width: 90,
-                                            child: Center(
+                                            child: const Center(
                                               child: Text(
-                                                orderState(orders[index]),
+                                                'Cancelled',
                                                 textAlign: TextAlign.center,
                                               ),
                                             ),

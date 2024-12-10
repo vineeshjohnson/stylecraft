@@ -13,8 +13,9 @@ class ProductDetailsFetchEvent extends ProductDetailEvent {
 }
 
 class AddToCartEvent extends ProductDetailEvent {
-  const AddToCartEvent({required this.productid});
+  const AddToCartEvent({required this.productid,required this.size});
   final String productid;
+  final String size;
 }
 
 class AddToFavEvent extends ProductDetailEvent {

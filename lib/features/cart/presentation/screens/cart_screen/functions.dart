@@ -2,10 +2,14 @@ import 'package:finalproject/core/models/product_model.dart';
 import 'package:finalproject/core/usecases/common_widgets/sized_box.dart';
 import 'package:finalproject/features/cart/presentation/bloc/cart_fav_bloc.dart';
 import 'package:finalproject/features/cart/presentation/widgets/cart_widget.dart';
+import 'package:finalproject/features/order/presentation/screens/order_with_address.dart';
+import 'package:finalproject/features/order/presentation/screens/orderwith_address_for_cart.dart';
 import 'package:flutter/material.dart';
 
-BottomAppBar buttonForTotal(CartFetchedState state) {
+BottomAppBar buttonForTotal(
+    CartFetchedState state, BuildContext context, List<ProductModel> list) {
   return BottomAppBar(
+    color: Colors.black,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -26,7 +30,10 @@ BottomAppBar buttonForTotal(CartFetchedState state) {
         ),
         Expanded(
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => OrderwithAddressForCart(products: list)));
+            },
             style: ElevatedButton.styleFrom(
               shape: const RoundedRectangleBorder(),
               padding: const EdgeInsets.symmetric(vertical: 18),

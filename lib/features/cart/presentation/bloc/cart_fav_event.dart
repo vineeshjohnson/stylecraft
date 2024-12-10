@@ -14,7 +14,7 @@ class FetchFavEvent extends CartFavEvent {}
 
 class CartIncrementEvent extends CartFavEvent {
   final String productId;
-  final Map<String, dynamic> updatedValues;
+  final List<dynamic> updatedValues;
   const CartIncrementEvent({
     required this.productId,
     required this.updatedValues,

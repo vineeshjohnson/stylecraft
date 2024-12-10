@@ -34,6 +34,24 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       emit(AddressChangedState(selectedindex: event.selectedaddress));
       emit(SetState());
     });
+
+    on<CartCheckoutProductIncrimentEvent>((event, emit) async {
+      List<int> newcount = event.counts;
+      newcount[event.index] = newcount[event.index] + 1;
+      emit(CartCheckoutTriggeredState(
+        newcounts: newcount,
+      ));
+      emit(SetState());
+    });
+
+     on<CartCheckoutProductDecrimentEvent>((event, emit) async {
+      List<int> newcount = event.counts;
+      newcount[event.index] = newcount[event.index] - 1;
+      emit(CartCheckoutTriggeredState(
+        newcounts: newcount,
+      ));
+      emit(SetState());
+    });
   }
 }
 

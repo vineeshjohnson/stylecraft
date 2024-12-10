@@ -22,6 +22,57 @@ class PaymentThroughOnlineEvent extends PaymentEvent {
       {required this.amount});
 }
 
+class PaymentThroughOnlineForCartEvent extends PaymentEvent {
+  final List<ProductModel> models;
+  final List<int> counts;
+  final List<String> sizes;
+  final List<int> prices;
+  final List<String> address;
+  final int total;
+
+  const PaymentThroughOnlineForCartEvent(
+      {required this.models,
+      required this.counts,
+      required this.sizes,
+      required this.prices,
+      required this.address,
+      required this.total});
+}
+
+class PaymentThroughWalletForCartEvent extends PaymentEvent {
+  final List<ProductModel> models;
+  final List<int> counts;
+  final List<String> sizes;
+  final List<int> prices;
+  final List<String> address;
+  final int total;
+
+  const PaymentThroughWalletForCartEvent(
+      {required this.models,
+      required this.counts,
+      required this.sizes,
+      required this.prices,
+      required this.address,
+      required this.total});
+}
+
+class PaymentThroughCodForCartEvent extends PaymentEvent {
+  final List<ProductModel> models;
+  final List<int> counts;
+  final List<String> sizes;
+  final List<int> prices;
+  final List<String> address;
+  final int total;
+
+  const PaymentThroughCodForCartEvent(
+      {required this.models,
+      required this.counts,
+      required this.sizes,
+      required this.prices,
+      required this.address,
+      required this.total});
+}
+
 class WalletPaymentProceedEvent extends PaymentEvent {
   final int count;
   final int price;

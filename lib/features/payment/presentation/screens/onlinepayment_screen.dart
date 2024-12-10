@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:finalproject/core/models/product_model.dart';
 import 'package:finalproject/core/usecases/common_widgets/confirm_dialogues.dart';
 import 'package:finalproject/core/usecases/common_widgets/normal_button.dart';
@@ -7,116 +5,34 @@ import 'package:finalproject/core/usecases/common_widgets/sized_box.dart';
 import 'package:finalproject/core/usecases/strings/strings.dart';
 import 'package:finalproject/features/payment/presentation/bloc/payment_bloc.dart';
 import 'package:finalproject/features/payment/presentation/screens/success_screen.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:lottie/lottie.dart';
-import 'package:http/http.dart' as http;
 
 class OnlinepaymentScreen extends StatelessWidget {
-  const OnlinepaymentScreen(
+  OnlinepaymentScreen(
       {super.key,
-      required this.count,
+      this.count,
       required this.totalamount,
-      required this.model,
-      required this.size,
-      required this.address});
-  final int count;
-  final int totalamount;
-  final ProductModel model;
-  final String size;
-  final List<String> address;
+      this.model,
+      this.size,
+      required this.address,
+      this.counts,
+      this.models,
+      this.prices,
+      this.sizes});
+  int? count;
+  int totalamount;
+  ProductModel? model;
+  String? size;
+  List<String> address;
+  List<int>? counts;
+  List<ProductModel>? models;
+  List<String>? sizes;
+  List<int>? prices;
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic>? intentPaymentData;
     bool isloading = false;
-
-    showPaymentSheet() async {
-      try {
-        // Present the payment sheet
-        await Stripe.instance.presentPaymentSheet();
-
-        // If no exception occurs, the payment is successful
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Payment Successful")),
-        );
-
-        // Clear the intentPaymentData after successful payment
-        intentPaymentData = null;
-      } on StripeException catch (error) {
-        // Handle Stripe-specific exceptions
-        if (kDebugMode) {
-          print("StripeException: $error");
-        }
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Payment Canceled")),
-        );
-      } catch (err) {
-        // Handle general exceptions
-        if (kDebugMode) {
-          print("Error: $err");
-        }
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Payment Failed: $err")),
-        );
-      }
-    }
-
-    makeIntentForPayment(amountToBeCharge, currency) async {
-      try {
-        Map<String, dynamic>? paymentInfo = {
-          "amount": (int.parse(amountToBeCharge) * 100).toString(),
-          "currency": currency,
-          "payment_method_types[]": "card"
-        };
-
-        var responseFromStripeAPI = await http.post(
-            Uri.parse("https://api.stripe.com/v1/payment_intents"),
-            body: paymentInfo,
-            headers: {
-              "Authorization": "Bearer $secretkey",
-              "Content-Type": "application/X-www-form-urlencoded"
-            });
-
-        print("response from API =" + responseFromStripeAPI.body);
-        return jsonDecode(responseFromStripeAPI.body);
-      } catch (errrorMsg) {
-        if (kDebugMode) {
-          print(errrorMsg);
-        } else {
-          print(errrorMsg.toString());
-        }
-      }
-    }
-
-    paymentSheetInitilization(amountToBeCharge, currency) async {
-      try {
-        intentPaymentData =
-            await makeIntentForPayment(amountToBeCharge, currency);
-
-        await Stripe.instance
-            .initPaymentSheet(
-                paymentSheetParameters: SetupPaymentSheetParameters(
-                    allowsDelayedPaymentMethods: true,
-                    paymentIntentClientSecret:
-                        intentPaymentData!["client_secret"],
-                    style: ThemeMode.dark,
-                    merchantDisplayName: "Style Craft"))
-            .then((val) {
-          print(val);
-          print('fvgwduygfuydfgu8ygsdfygsdyuf');
-        });
-
-        showPaymentSheet();
-      } catch (errrorMsg, s) {
-        if (kDebugMode) {
-          print(s);
-        } else {
-          print(errrorMsg.toString());
-        }
-      }
-    }
 
     return BlocProvider(
       create: (context) => PaymentBloc(),
@@ -164,7 +80,7 @@ class OnlinepaymentScreen extends StatelessWidget {
                         Container(
                             child: Lottie.asset(
                                 'assets/images/securepayment.json')),
-                        Container(
+                        SizedBox(
                           width: 300,
                           child: Text(
                             'Your payment is 100% secure with our trusted payment gateway.',
@@ -188,7 +104,7 @@ class OnlinepaymentScreen extends StatelessWidget {
                         Container(
                             child:
                                 Lottie.asset('assets/images/fastpayment.json')),
-                        Container(
+                        SizedBox(
                           width: 300,
                           child: Text(
                             'Fast and seamless payments to save your valuable time.',
@@ -211,7 +127,7 @@ class OnlinepaymentScreen extends StatelessWidget {
                       children: [
                         Container(
                             child: Lottie.asset('assets/images/reliable.json')),
-                        Container(
+                        SizedBox(
                           width: 300,
                           child: Text(
                             'Trusted by thousands of customers for secure and smooth transactions.',
@@ -224,14 +140,27 @@ class OnlinepaymentScreen extends StatelessWidget {
                   ),
                   kheight30,
                   NormalButton(
-                    onTap: () {
-                      context.read<PaymentBloc>().add(PaymentThroughOnlineEvent(
-                          count, model.productId!, size, address,
-                          amount: totalamount));
-                    },
+                    onTap: models == null
+                        ? () {
+                            context.read<PaymentBloc>().add(
+                                PaymentThroughOnlineEvent(
+                                    count!, model!.productId!, size!, address,
+                                    amount: totalamount));
+                          }
+                        : () {
+                            context.read<PaymentBloc>().add(
+                                PaymentThroughOnlineForCartEvent(
+                                    total: totalamount,
+                                    models: models!,
+                                    counts: counts!,
+                                    sizes: sizes!,
+                                    prices: prices!,
+                                    address: address));
+                          },
                     buttonTxt: 'Pay $rupee $totalamount',
                     color: Colors.green.shade800,
-                    widgets: isloading ? CircularProgressIndicator() : null,
+                    widgets:
+                        isloading ? const CircularProgressIndicator() : null,
                   )
                 ],
               ),

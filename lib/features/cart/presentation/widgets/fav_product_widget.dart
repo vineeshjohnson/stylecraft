@@ -59,17 +59,24 @@ class AlternativeProductWidget extends StatelessWidget {
               ),
             ),
 
-            // Image in the center
+            // Image in the center with placeholder
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: ClipRRect(
                   borderRadius:
                       BorderRadius.circular(10), // Image rounded corners
-                  child: Image.network(
-                    product.imagepath[0],
+                  child: FadeInImage.assetNetwork(
+                    placeholder:
+                        'assets/images/loadings.jpg', // Path to placeholder image
+                    image: product.imagepath[0],
                     fit: BoxFit.cover, // Image fit style
                     width: double.infinity, // Image takes full width
+                    imageErrorBuilder: (context, error, stackTrace) =>
+                        Image.asset(
+                      'assets/images/placeholder.png', // Fallback for image error
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),

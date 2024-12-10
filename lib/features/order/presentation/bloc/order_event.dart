@@ -27,3 +27,29 @@ class AddressChangedEvent extends OrderEvent {
   final int selectedaddress;
   const AddressChangedEvent({required this.selectedaddress});
 }
+
+class CartCheckoutProductIncrimentEvent extends OrderEvent {
+  final int index;
+  List<int> counts;
+  List<int> prices;
+  List<ProductModel> product;
+
+  CartCheckoutProductIncrimentEvent(
+      {required this.index,
+      required this.counts,
+      required this.prices,
+      required this.product});
+}
+
+class CartCheckoutProductDecrimentEvent extends OrderEvent {
+  final int index;
+  List<int> counts;
+  List<int> prices;
+  List<ProductModel> product;
+
+  CartCheckoutProductDecrimentEvent(
+      {required this.index,
+      required this.counts,
+      required this.prices,
+      required this.product});
+}

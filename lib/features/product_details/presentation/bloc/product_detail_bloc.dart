@@ -18,7 +18,7 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
 
     on<AddToCartEvent>((event, emit) async {
       emit(ProductDetailLoading());
-      await _handleAddToCartEvent(event.productid);
+      await _handleAddToCartEvent(event.productid, event.size);
       final isCart = await _isProductInCart(event.productid);
       final isFav = await _isProductInFavorites(event.productid);
 
@@ -75,13 +75,13 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {
     return false;
   }
 
-  Future<void> _handleAddToCartEvent(String productid) async {
+  Future<void> _handleAddToCartEvent(String productid, String size) async {
     final String userId = _auth.currentUser!.uid;
     final DocumentReference userDocRef =
         _firestore.collection('users').doc(userId);
 
     await userDocRef.update({
-      'cart2.$productid': 1,
+      'cart2.$productid': [size, 1],
     });
   }
 

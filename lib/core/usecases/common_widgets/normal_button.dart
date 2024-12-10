@@ -28,15 +28,14 @@ class NormalButton extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 50),
-        child: widgets != null
-            ? widgets
-            : Text(
-                buttonTxt,
-                style: const TextStyle(
-                  fontSize: 18.0,
-                  color: Colors.white,
-                ),
+        child: widgets ??
+            Text(
+              buttonTxt,
+              style: const TextStyle(
+                fontSize: 18.0,
+                color: Colors.white,
               ),
+            ),
       ),
     );
   }

@@ -3,8 +3,10 @@ import 'package:finalproject/core/models/product_model.dart';
 import 'package:finalproject/core/usecases/common_widgets/sized_box.dart';
 import 'package:finalproject/core/usecases/strings/strings.dart';
 import 'package:finalproject/features/user_orders/presentation/bloc/userorders_bloc.dart';
+import 'package:finalproject/features/user_orders/presentation/screens/order_detailed_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 
 class PendingOrders extends StatelessWidget {
@@ -14,7 +16,6 @@ class PendingOrders extends StatelessWidget {
   Widget build(BuildContext context) {
     List<ProductModel> products = [];
     List<OrderModel> orders = [];
-
     return BlocProvider(
       create: (context) =>
           UserordersBloc()..add(PendingUserOrdersFetchingEvent()),
@@ -35,6 +36,7 @@ class PendingOrders extends StatelessWidget {
         builder: (context, state) {
           if (state is LoadingState) {
             return Scaffold(
+              backgroundColor: Colors.black,
               body: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ListView.separated(
@@ -97,73 +99,114 @@ class PendingOrders extends StatelessWidget {
               ),
             );
           }
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                kheight30,
-                Expanded(
-                    child: ListView.separated(
-                        itemBuilder: (context, index) => Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(),
-                                  borderRadius: BorderRadius.circular(5)),
-                              height: 110,
-                              width: double.infinity,
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.network(
-                                        products[index].imagepath[0]),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text(
-                                          products[index].name,
-                                          style: addressstyle,
-                                        ),
-                                        Text('Size:${orders[index].size}'),
-                                        Text("$rupee ${orders[index].price}")
-                                      ],
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                              border: Border.all()),
-                                          height: 35,
-                                          width: 90,
-                                          child: const Center(
-                                            child: Text('In Transist'),
+          return products.isEmpty
+              ? Scaffold(
+                  backgroundColor: Colors.black,
+                  body: Center(
+                    child: Lottie.asset('assets/images/noproduct.json'),
+                  ),
+                )
+              : Scaffold(
+                  backgroundColor: Colors.black,
+                  body: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        kheight30,
+                        Expanded(
+                            child: ListView.separated(
+                                itemBuilder: (context, index) => Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey,
+                                          border:
+                                              Border.all(color: Colors.grey),
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      height: 110,
+                                      width: double.infinity,
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              decoration: const BoxDecoration(),
+                                              height: 90,
+                                              width: 90,
+                                              child: Image.network(
+                                                products[index].imagepath[0],
+                                                fit: BoxFit.fill,
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                        TrackButton(
-                                          onTap: () {},
-                                          buttonTxt: 'Track',
-                                          color: Colors.black,
-                                        )
-                                      ],
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Text(
+                                                  products[index].name,
+                                                  style: addressstyle,
+                                                ),
+                                                Text(
+                                                  'Size:${orders[index].size}',
+                                                ),
+                                                Text(
+                                                    "$rupee ${orders[index].price}")
+                                              ],
+                                            ),
+                                          ),
+                                          const Spacer(),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      border: Border.all()),
+                                                  height: 35,
+                                                  width: 90,
+                                                  child: Center(
+                                                    child: Text(
+                                                      orderState(orders[index]),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  ),
+                                                ),
+                                                TrackButton(
+                                                  onTap: () {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                OrderDetailedScreen(
+                                                                  productmodel:
+                                                                      products[
+                                                                          index],
+                                                                  ordermodel:
+                                                                      orders[
+                                                                          index],
+                                                                )));
+                                                  },
+                                                  buttonTxt: 'Track',
+                                                  color: Colors.black,
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  )
-                                ],
-                              ),
-                            ),
-                        separatorBuilder: (context, index) => kheight20,
-                        itemCount: orders.length)),
-              ],
-            ),
-          );
+                                separatorBuilder: (context, index) => kheight20,
+                                itemCount: orders.length)),
+                      ],
+                    ),
+                  ),
+                );
         },
       ),
     );
@@ -202,5 +245,30 @@ class TrackButton extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+String orderState(OrderModel model) {
+  if (model.cancelled == true) {
+    return 'Cancelled';
+  } else if (model.packed == true &&
+      model.shipped == true &&
+      model.confirmed == true &&
+      model.outofdelivery == true &&
+      model.completed == true) {
+    return 'Completed';
+  } else if (model.packed == true &&
+      model.shipped == true &&
+      model.confirmed == true &&
+      model.outofdelivery == true) {
+    return 'Out of delivery';
+  } else if (model.packed == true &&
+      model.shipped == true &&
+      model.confirmed == true) {
+    return 'Shipped';
+  } else if (model.packed == true && model.confirmed == true) {
+    return 'Packed';
+  } else {
+    return 'Confirmed';
   }
 }

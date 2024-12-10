@@ -35,3 +35,12 @@ class AddressChangedState extends OrderState {
   final int selectedindex;
   const AddressChangedState({required this.selectedindex});
 }
+
+class CartCheckoutTriggeredState extends OrderState {
+  final List<int> newcounts;
+
+ const CartCheckoutTriggeredState({
+    required this.newcounts,
+  
+  });
+}

@@ -7,22 +7,31 @@ import 'package:finalproject/features/payment/presentation/screens/wallet_paymen
 import 'package:flutter/material.dart';
 
 class PaymentScreen extends StatelessWidget {
-  const PaymentScreen(
+  PaymentScreen(
       {super.key,
-      required this.product,
+      this.product,
       required this.address,
-      required this.productcount,
-      required this.productprice,
+      this.productcount,
+      this.productprice,
       required this.discount,
       required this.total,
-      required this.size});
-  final ProductModel product;
+      this.size,
+      this.productcounts,
+      this.productprices,
+      this.products,
+      this.sizes});
+  final ProductModel? product;
   final List<String> address;
-  final int productcount;
-  final int productprice;
+  final int? productcount;
+  final int? productprice;
   final int discount;
   final int total;
-  final String size;
+  final String? size;
+
+  List<int>? productcounts;
+  List<int>? productprices;
+  List<ProductModel>? products;
+  List<String>? sizes;
 
   @override
   Widget build(BuildContext context) {
@@ -91,66 +100,135 @@ class PaymentScreen extends StatelessWidget {
               'Product Details',
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
-            Container(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          height: 130,
-                          width: 100,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: NetworkImage(product.imagepath[0]),
-                                  fit: BoxFit.fill)),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              product.name,
-                              style: const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              'Size : $size ',
-                              style: TextStyle(
-                                  fontSize: 15, color: Colors.grey.shade600),
-                            ),
-                            const SizedBox(
-                              width: 3,
-                            ),
-                            Text('Qty $productcount'),
-                            Text(
-                              'Total Amount : \u20B9$productprice',
-                              style: addressstyle,
-                            ),
-                          ],
-                        )
-                      ],
+            products == null
+                ? Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                height: 130,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image:
+                                            NetworkImage(product!.imagepath[0]),
+                                        fit: BoxFit.fill)),
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    product!.name,
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    'Size : $size ',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.grey.shade600),
+                                  ),
+                                  const SizedBox(
+                                    width: 3,
+                                  ),
+                                  Text('Qty $productcount'),
+                                  Text(
+                                    'Total Amount : \u20B9$productprice',
+                                    style: addressstyle,
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-            ),
+                  )
+                : ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) => Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 130,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                products![index].imagepath[0]),
+                                            fit: BoxFit.fill)),
+                                  ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        products![index].name,
+                                        style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        'Size : ${sizes![index]} ',
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.grey.shade600),
+                                      ),
+                                      const SizedBox(
+                                        width: 3,
+                                      ),
+                                      Text('Qty ${productcounts![index]}'),
+                                      Text(
+                                        'Total Amount : \u20B9${productprices![index]}',
+                                        style: addressstyle,
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                    separatorBuilder: (context, index) => kheight10,
+                    itemCount: products!.length),
             kheight20,
             kheight30,
             GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => OnlinepaymentScreen(
-                        count: productcount,
-                        totalamount: total,
-                        model: product,
-                        size: size,
-                        address: address)));
+                    builder: (context) => products == null
+                        ? OnlinepaymentScreen(
+                            count: productcount!,
+                            totalamount: total,
+                            model: product!,
+                            size: size!,
+                            address: address)
+                        : OnlinepaymentScreen(
+                            totalamount: total,
+                            address: address,
+                            prices: productprices,
+                            models: products,
+                            sizes: sizes,
+                            counts: productcounts,
+                          )));
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -177,13 +255,23 @@ class PaymentScreen extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => WalletPaymentScreen(
-                          count: productcount,
-                          totalamount: total,
-                          model: product,
-                          size: size,
-                          address: address,
-                        )));
+                    builder: (context) => products == null
+                        ? WalletPaymentScreen(
+                          
+                            count: productcount!,
+                            totalamount: total,
+                            model: product!,
+                            size: size!,
+                            address: address,
+                          )
+                        : WalletPaymentScreen(
+                            totalamount: total,
+                            address: address,
+                            prices: productprices,
+                            sizes: sizes,
+                            models: products,
+                            counts: productcounts,
+                          )));
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -210,13 +298,18 @@ class PaymentScreen extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (contex) => CashondeliveryScreen(
-                          count: productcount,
+                    builder: (contex) => products==null? CashondeliveryScreen(
+                          count: productcount!,
                           totalamount: total,
-                          model: product,
-                          size: size,
+                          model: product!,
+                          size: size!,
                           address: address,
-                        )));
+                        ):CashondeliveryScreen( totalamount: total,
+                            address: address,
+                            prices: productprices,
+                            sizes: sizes,
+                            models: products,
+                            counts: productcounts,)));
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -238,7 +331,8 @@ class PaymentScreen extends StatelessWidget {
                   ],
                 ),
               ),
-            )
+            ),
+            kheight40
           ],
         ),
       ),

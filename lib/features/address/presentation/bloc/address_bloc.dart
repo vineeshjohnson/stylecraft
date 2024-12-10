@@ -8,9 +8,7 @@ part 'address_state.dart';
 
 class AddressBloc extends Bloc<AddressEvent, AddressState> {
   AddressBloc() : super(AddressInitial()) {
-    on<AddressEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<AddressEvent>((event, emit) {});
 
     on<AddAddress>((event, emit) async {
       emit(AddressLoadingState());

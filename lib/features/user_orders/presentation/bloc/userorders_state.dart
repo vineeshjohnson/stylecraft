@@ -22,3 +22,15 @@ final class PendingOrdersState extends UserordersState {
 }
 
 final class LoadingState extends UserordersState {}
+
+final class CancelReasonSelectedState extends UserordersState {
+  final String selectedreason;
+  const CancelReasonSelectedState({required this.selectedreason});
+}
+
+final class ResetState extends UserordersState {}
+
+final class CancelledState extends UserordersState {
+  final OrderModel model;
+  const CancelledState({required this.model});
+}

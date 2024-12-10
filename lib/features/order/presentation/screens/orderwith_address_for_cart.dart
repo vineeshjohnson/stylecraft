@@ -9,30 +9,36 @@ import 'package:finalproject/features/payment/presentation/screens/payment_scree
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class OrderWithAddress extends StatelessWidget {
-  const OrderWithAddress({super.key, this.product, this.size,});
-  final ProductModel? product;
-  final String? size;
- 
+class OrderwithAddressForCart extends StatelessWidget {
+  const OrderwithAddressForCart({super.key, this.products});
+
+  final List<ProductModel>? products;
   @override
   Widget build(BuildContext context) {
     int selectedaddress = 0;
-    int productcount = 1;
-    int productprice = product!.price * productcount;
-    int discount = productcount * 200;
-    int shipping = 40;
-    int totalamount = (productprice) + 40;
+    List<String> sizes = cartProductSize(products!);
+    List<int> cartproductcount = cartProductCount(products!);
+    List<int> cartproductprice = cartProductAmount(cartproductcount, products!);
+    List<int> withoutdiscount =
+        cartEachPrice(cartproductcount, cartproductprice);
+    int totalcartcount = cartproductcount.reduce((a, b) => a + b);
+
+    int cartproductdiscound = 200 * totalcartcount;
+    int totalcartprice = cartproductprice.reduce((a, b) => a + b);
 
     List<List<String>> addresses = [];
     return BlocProvider(
       create: (context) => OrderBloc()..add(AddressaFetchingEvent()),
       child: BlocConsumer<OrderBloc, OrderState>(
         listener: (context, state) {
-          if (state is OrderDetailsTriggeredState) {
-            productprice = state.price;
-            discount = state.discountamount;
-            totalamount = state.totalamount;
-            productcount = state.count;
+          if (state is CartCheckoutTriggeredState) {
+            cartproductcount = state.newcounts;
+            cartproductprice = cartProductAmount(cartproductcount, products!);
+            withoutdiscount = cartEachPrice(cartproductcount, cartproductprice);
+            totalcartcount = cartproductcount.reduce((a, b) => a + b);
+
+            cartproductdiscound = 200 * totalcartcount;
+            totalcartprice = cartproductprice.reduce((a, b) => a + b);
           } else if (state is AddressFetchedState) {
             for (int i = 0; i < state.address.length; i++) {
               addresses.add(state.address[i].split('&'));
@@ -133,116 +139,144 @@ class OrderWithAddress extends StatelessWidget {
                   Divider(
                     thickness: addresses.isNotEmpty ? 10 : 0,
                   ),
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                height: 130,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image:
-                                            NetworkImage(product!.imagepath[0]),
-                                        fit: BoxFit.fill)),
-                              ),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              Column(
+
+//body section
+
+                  ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      primary: false,
+                      itemBuilder: (context, index) => Container(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    product!.name,
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        height: 130,
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: NetworkImage(
+                                                    products![index]
+                                                        .imagepath[0]),
+                                                fit: BoxFit.fill)),
+                                      ),
+                                      const SizedBox(
+                                        width: 8,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            products![index].name,
+                                            style: const TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            'Size : ${products![index].selectedsize}',
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.grey.shade600),
+                                          ),
+                                          Text(
+                                            'Price: \u20B9${withoutdiscount[index]}',
+                                            style: const TextStyle(
+                                              decoration:
+                                                  TextDecoration.lineThrough,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 3,
+                                          ),
+                                          Text(
+                                            '\u20B9${cartproductprice[index]}',
+                                            style: addressstyle,
+                                          ),
+                                          SizedBox(
+                                            height: 35,
+                                            width: 150,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                IconButton(
+                                                    onPressed: () {
+                                                      context.read<OrderBloc>().add(
+                                                          CartCheckoutProductIncrimentEvent(
+                                                              index: index,
+                                                              counts:
+                                                                  cartproductcount,
+                                                              prices:
+                                                                  cartproductprice,
+                                                              product:
+                                                                  products!));
+                                                    },
+                                                    icon: const Icon(
+                                                      Icons.add_circle_outline,
+                                                      color: Colors.green,
+                                                      size: 25,
+                                                    )),
+                                                Text(
+                                                  cartproductcount[index]
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                IconButton(
+                                                    onPressed: cartproductcount[
+                                                                index] <
+                                                            2
+                                                        ? () {
+                                                            snackBar(context,
+                                                                'Minimum 1 product should select');
+                                                          }
+                                                        : () {
+                                                            context
+                                                                .read<
+                                                                    OrderBloc>()
+                                                                .add(CartCheckoutProductDecrimentEvent(
+                                                                    index:
+                                                                        index,
+                                                                    counts:
+                                                                        cartproductcount,
+                                                                    prices:
+                                                                        cartproductprice,
+                                                                    product:
+                                                                        products!));
+                                                          },
+                                                    icon: const Icon(
+                                                      Icons
+                                                          .remove_circle_outline,
+                                                      color: Colors.red,
+                                                      size: 25,
+                                                    ))
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ],
                                   ),
-                                  Text(
-                                    'Size : $size',
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.grey.shade600),
-                                  ),
-                                  Text(
-                                    'Price: \u20B9${productprice + discount}',
-                                    style: const TextStyle(
-                                      decoration: TextDecoration.lineThrough,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 3,
-                                  ),
-                                  Text(
-                                    '\u20B9$productprice',
-                                    style: addressstyle,
-                                  ),
-                                  SizedBox(
-                                    height: 35,
-                                    width: 110,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        IconButton(
-                                            onPressed: () {
-                                              context.read<OrderBloc>().add(
-                                                  TriggerOrderSummaryEvent(
-                                                      model: product!,
-                                                      productcount:
-                                                          productcount + 1));
-                                            },
-                                            icon: const Icon(
-                                              Icons.add_circle_outline,
-                                              color: Colors.green,
-                                              size: 25,
-                                            )),
-                                        Text(
-                                          productcount.toString(),
-                                          style: const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        IconButton(
-                                            onPressed: productcount < 2
-                                                ? () {
-                                                    snackBar(context,
-                                                        'Minimum 1 product should select');
-                                                  }
-                                                : () {
-                                                    context.read<OrderBloc>().add(
-                                                        TriggerOrderSummaryEvent(
-                                                            model: product!,
-                                                            productcount:
-                                                                productcount -
-                                                                    1));
-                                                  },
-                                            icon: const Icon(
-                                              Icons.remove_circle_outline,
-                                              color: Colors.red,
-                                              size: 25,
-                                            ))
-                                      ],
-                                    ),
-                                  )
+                                  kheight20,
+                                  const Text('Delivery by Nov 20, Wed.'),
+                                  Text('Shipping Charge  $rupee 40')
                                 ],
-                              )
-                            ],
+                              ),
+                            ),
                           ),
-                          kheight20,
-                          const Text('Delivery by Nov 20, Wed.'),
-                          Text('Shipping Charge  $rupee$shipping')
-                        ],
-                      ),
-                    ),
-                  ),
+                      separatorBuilder: (context, index) => kheight10,
+                      itemCount: products!.length),
                   kheight10,
                   Container(
                     height: 60,
@@ -280,8 +314,8 @@ class OrderWithAddress extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Price ($productcount item)'),
-                                Text('$rupee $productprice')
+                                Text('Price ($totalcartcount item)'),
+                                Text('$rupee $totalcartprice')
                               ],
                             ),
                             kheight10,
@@ -289,7 +323,7 @@ class OrderWithAddress extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text('Discount'),
-                                Text('$rupee $discount')
+                                Text('$rupee $cartproductdiscound')
                               ],
                             ),
                             kheight10,
@@ -297,7 +331,7 @@ class OrderWithAddress extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text('Shipping Charge'),
-                                Text('$rupee $shipping')
+                                Text('$rupee 40')
                               ],
                             ),
                             kheight20,
@@ -313,7 +347,7 @@ class OrderWithAddress extends StatelessWidget {
                                   style: addressstyle,
                                 ),
                                 Text(
-                                  '$rupee $totalamount',
+                                  '$rupee ${totalcartprice + 40}',
                                   style: addressstyle,
                                 )
                               ],
@@ -324,7 +358,7 @@ class OrderWithAddress extends StatelessWidget {
                             ),
                             kheight20,
                             Text(
-                              'You will save $rupee $discount in this order',
+                              'You will save $rupee $cartproductdiscound in this order',
                               style: addressstyle,
                             ),
                             kheight10,
@@ -357,7 +391,7 @@ class OrderWithAddress extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '$rupee $totalamount',
+                        '$rupee $totalcartprice',
                         style: const TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
@@ -369,13 +403,13 @@ class OrderWithAddress extends StatelessWidget {
                             : () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => PaymentScreen(
-                                          product: product!,
                                           address: addresses[selectedaddress],
-                                          productcount: productcount,
-                                          productprice: productprice,
-                                          discount: discount,
-                                          total: totalamount,
-                                          size: size!,
+                                          discount: cartproductdiscound,
+                                          total: totalcartprice,
+                                          sizes: sizes,
+                                          productcounts: cartproductcount,
+                                          productprices: cartproductprice,
+                                          products: products,
                                         )));
                               },
                         buttonTxt: 'Continue',
@@ -469,4 +503,37 @@ class AddAddressWidget extends StatelessWidget {
           color: Colors.blue,
         )));
   }
+}
+
+List<int> cartProductCount(List<ProductModel> models) {
+  List<int> count = [];
+  for (int i = 0; i < models.length; i++) {
+    count.add(models[i].count!);
+  }
+  return count;
+}
+
+List<int> cartProductAmount(List<int> count, List<ProductModel> models) {
+  List<int> amount = [];
+  for (int i = 0; i < count.length; i++) {
+    amount.add(count[i] * models[i].price);
+  }
+  return amount;
+}
+
+List<String> cartProductSize(List<ProductModel> models) {
+  List<String> sizes = [];
+  for (int i = 0; i < models.length; i++) {
+    sizes.add(models[i].selectedsize!);
+  }
+  return sizes;
+}
+
+List<int> cartEachPrice(List<int> productcount, List<int> productprice) {
+  List<int> discounts = [];
+  for (int i = 0; i < productcount.length; i++) {
+    int discount = (productcount[i] * 200) + productprice[i];
+    discounts.add(discount);
+  }
+  return discounts;
 }

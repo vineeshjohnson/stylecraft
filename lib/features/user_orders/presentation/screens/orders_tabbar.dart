@@ -1,3 +1,4 @@
+import 'package:finalproject/features/user_orders/presentation/screens/cancelled_orders.dart';
 import 'package:finalproject/features/user_orders/presentation/screens/completed_orders.dart';
 import 'package:finalproject/features/user_orders/presentation/screens/pending_orders.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ class UserOrdersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: const Text(
@@ -56,6 +57,13 @@ class UserOrdersPage extends StatelessWidget {
                   text: "Completed",
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                child: Tab(
+                  icon: Icon(Icons.cancel, size: 24),
+                  text: "Cancelled",
+                ),
+              ),
             ],
           ),
         ),
@@ -63,6 +71,7 @@ class UserOrdersPage extends StatelessWidget {
           children: [
             PendingOrders(),
             CompletedOrders(),
+            CancelledOrders(),
           ],
         ),
       ),

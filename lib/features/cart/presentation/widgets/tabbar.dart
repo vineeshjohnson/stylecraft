@@ -1,3 +1,4 @@
+import 'package:finalproject/core/usecases/strings/strings.dart';
 import 'package:finalproject/features/cart/presentation/screens/cart_screen/cart_products.dart';
 import 'package:flutter/material.dart';
 
@@ -12,32 +13,30 @@ class FavoritesAndCartPage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
+          title: Text(
             "My Products",
             style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                fontFamily: font4),
           ),
           centerTitle: true,
           flexibleSpace: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.black, Color.fromARGB(255, 33, 1, 1)],
+                colors: [Colors.white, Colors.grey],
                 begin: Alignment.bottomLeft,
                 end: Alignment.bottomRight,
               ),
             ),
           ),
-          elevation: 0,
+          elevation: 5,
           bottom: const TabBar(
-            indicator: UnderlineTabIndicator(
-              borderSide: BorderSide(width: 6.0, color: Colors.white),
-              insets: EdgeInsets.symmetric(horizontal: 20.0),
-            ),
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.white,
+            indicator: BoxDecoration(),
+            padding: EdgeInsets.all(5),
+            labelColor: Colors.black,
+            unselectedLabelColor: Colors.black,
             labelStyle: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -48,11 +47,19 @@ class FavoritesAndCartPage extends StatelessWidget {
             ),
             tabs: [
               Tab(
-                icon: Icon(Icons.shopping_cart_outlined, size: 24),
+                icon: Icon(
+                  Icons.shopping_cart,
+                  size: 50,
+                  color: Colors.green,
+                ),
                 text: "Cart",
               ),
               Tab(
-                icon: Icon(Icons.favorite_border_outlined, size: 24),
+                icon: Icon(
+                  Icons.favorite,
+                  size: 50,
+                  color: Colors.red,
+                ),
                 text: "Wish List",
               ),
             ],

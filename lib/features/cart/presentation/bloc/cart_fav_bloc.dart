@@ -112,7 +112,7 @@ Future<List<ProductModel>> fetchProductsByIds(List<String> productIds) async {
 }
 
 Future<List<ProductModel>> fetchCartProductsByIds(
-    List<String> productIds, List<int> count) async {
+    List<String> productIds, List<int> count, List<String> sizes) async {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   try {
@@ -127,8 +127,9 @@ Future<List<ProductModel>> fetchCartProductsByIds(
         .map((doc) => ProductModel.fromDocument(doc))
         .toList();
     for (int i = 0; i < productIds.length; i++) {
-      products[i].count =
-          count[i]; // Ensure count is associated with the right product
+      products[i].count = count[i];
+      products[i].selectedsize =
+          sizes[i]; // Ensure count is associated with the right product
     }
 
     return products;
@@ -148,14 +149,34 @@ Future<List<ProductModel>> fetchCartProducts() async {
         await firestore.collection('users').doc(userId).get();
 
     if (userSnapshot.exists && userSnapshot.data() != null) {
-      Map<String, dynamic> cart2Map =
-          userSnapshot.get('cart2') as Map<String, dynamic>? ?? {};
+      Map<String, dynamic> cartzMap = userSnapshot.get('cart2');
 
-      List<String> productIds = cart2Map.keys.cast<String>().toList();
-      List<int> productcount = cart2Map.values.cast<int>().toList();
+      print(cartzMap);
+      List<String> productIds = cartzMap.keys.cast<String>().toList();
+
+      print(productIds);
+      
+      var count = [];
+      var size = [];
+
+      for (int i = 0; i < productIds.length; i++) {
+        count.add(cartzMap.values.toList()[i][1]);
+      }
+
+      for (int i = 0; i < productIds.length; i++) {
+        size.add(cartzMap.values.toList()[i][0]);
+      }
+
+      List<int> counts = count.cast<int>();
+      print(counts);
+
+      List<String> sizes = size.cast<String>();
+      print(sizes);
+
+      List<int> productcount = count.cast<int>();
 
       List<ProductModel> cartProducts =
-          await fetchCartProductsByIds(productIds, productcount);
+          await fetchCartProductsByIds(productIds, productcount, sizes);
 
       return cartProducts;
     } else {
@@ -169,17 +190,18 @@ Future<List<ProductModel>> fetchCartProducts() async {
 }
 
 Future<void> incrementProductById(
-    String productId, Map<String, dynamic> updatedValues) async {
+    String productId, List<dynamic> updatedValues) async {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
   final String userId = auth.currentUser!.uid;
 
   try {
+    print(updatedValues);
     // Reference to the user's document
     DocumentReference userDocRef = firestore.collection('users').doc(userId);
 
     // Update the specific product count in the 'cart2' map
-    await userDocRef.update({'cart2.$productId': updatedValues[productId]});
+    await userDocRef.update({'cart2.$productId': updatedValues});
 
     print('Product updated successfully!');
   } catch (e) {
@@ -213,9 +235,6 @@ int totalPrice(List<ProductModel> models) {
   }
   return price;
 }
-// var products = snapshot.data!;
-//                       for (int i = 0; i < products.length; i++) {
-//                         v = v + (products[i].price * products[i].count!);}
 
 Future<void> removeProductFromCart(String productId) async {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;

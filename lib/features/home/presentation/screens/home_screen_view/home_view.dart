@@ -8,6 +8,7 @@ import 'package:finalproject/features/home/presentation/screens/home_screen_view
 import 'package:finalproject/features/home/presentation/screens/home_screen_view/widgets/under_widget_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -60,9 +61,11 @@ class HomePage extends StatelessWidget {
               ),
             );
           } else {
-            return const Scaffold(
+            return Scaffold(
+              backgroundColor: Colors.black,
               body: Center(
-                child: CircularProgressIndicator(),
+                child: Lottie.asset("assets/images/loading.json",
+                    width: double.infinity, height: 300),
               ),
             );
           }

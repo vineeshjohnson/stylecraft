@@ -9,19 +9,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 
 class CashondeliveryScreen extends StatelessWidget {
-  const CashondeliveryScreen(
+  CashondeliveryScreen(
       {super.key,
-      required this.count,
+      this.count,
       required this.totalamount,
-      required this.model,
-      required this.size,
-      required this.address});
+      this.model,
+      this.size,
+      required this.address,
+      this.counts,
+      this.models,
+      this.prices,
+      this.sizes});
 
-  final int count;
+  final int? count;
   final int totalamount;
-  final ProductModel model;
-  final String size;
+  final ProductModel? model;
+  final String? size;
   final List<String> address;
+  List<int>? counts;
+  List<ProductModel>? models;
+  List<String>? sizes;
+  List<int>? prices;
   @override
   Widget build(BuildContext context) {
     bool isloading = false;
@@ -92,15 +100,26 @@ class CashondeliveryScreen extends StatelessWidget {
                         color: Colors.redAccent,
                       ),
                       NormalButton(
-                        onTap: () {
-                          context.read<PaymentBloc>().add(
-                              CodPaymentProceedEvent(
-                                  count: count,
-                                  price: totalamount,
-                                  productid: model.productId!,
-                                  size: size,
-                                  address: address));
-                        },
+                        onTap: models == null
+                            ? () {
+                                context.read<PaymentBloc>().add(
+                                    CodPaymentProceedEvent(
+                                        count: count!,
+                                        price: totalamount,
+                                        productid: model!.productId!,
+                                        size: size!,
+                                        address: address));
+                              }
+                            : () {
+                                context.read<PaymentBloc>().add(
+                                    PaymentThroughCodForCartEvent(
+                                        models: models!,
+                                        counts: counts!,
+                                        sizes: sizes!,
+                                        prices: prices!,
+                                        address: address,
+                                        total: totalamount));
+                              },
                         buttonTxt: isloading ? 'Processing' : 'Confirm Order',
                         color: Colors.greenAccent.shade700,
                       )

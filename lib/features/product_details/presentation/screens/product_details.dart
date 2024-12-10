@@ -52,6 +52,7 @@ class ProductDetails extends StatelessWidget {
                 ),
               ),
               bottomNavigationBar: BottomAppbarWidget(
+                bloc: ProductDetailBloc(),
                 productModel: productModel,
                 state: ProductDetailsFetchedState(
                     iscart: state.iscart, isfav: state.isfav),

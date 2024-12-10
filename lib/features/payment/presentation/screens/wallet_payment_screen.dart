@@ -8,18 +8,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WalletPaymentScreen extends StatelessWidget {
-  const WalletPaymentScreen(
+  WalletPaymentScreen(
       {super.key,
-      required this.count,
+      this.count,
       required this.totalamount,
-      required this.model,
-      required this.size,
-      required this.address});
-  final int count;
-  final int totalamount;
-  final ProductModel model;
-  final String size;
-  final List<String> address;
+      this.model,
+      this.size,
+      required this.address,
+      this.counts,
+      this.models,
+      this.prices,
+      this.sizes});
+  int? count;
+  int totalamount;
+  ProductModel? model;
+  String? size;
+  List<String> address;
+  List<int>? counts;
+  List<ProductModel>? models;
+  List<String>? sizes;
+  List<int>? prices;
   @override
   Widget build(BuildContext context) {
     bool isloading = false;
@@ -126,11 +134,19 @@ class WalletPaymentScreen extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
-                            Text(
-                              '$rupee ${model.price}',
-                              style: const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            )
+                            models == null
+                                ? Text(
+                                    '$rupee ${model!.price}',
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                : Text(
+                                    '$rupee $totalamount',
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  )
                           ],
                         ),
                         Row(
@@ -141,11 +157,19 @@ class WalletPaymentScreen extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
-                            Text(
-                              '$count',
-                              style: const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            )
+                            models != null
+                                ? Text(
+                                    counts!.reduce((a, b) => a + b).toString(),
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                : Text(
+                                    '${model!.count}',
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  )
                           ],
                         ),
                         Row(
@@ -184,14 +208,26 @@ class WalletPaymentScreen extends StatelessWidget {
                 ),
                 kheight30,
                 NormalButton(
-                  onTap: () {
-                    context.read<PaymentBloc>().add(WalletPaymentProceedEvent(
-                        count: count,
-                        price: totalamount,
-                        productid: model.productId!,
-                        size: size,
-                        address: address));
-                  },
+                  onTap: models == null
+                      ? () {
+                          context.read<PaymentBloc>().add(
+                              WalletPaymentProceedEvent(
+                                  count: count!,
+                                  price: totalamount,
+                                  productid: model!.productId!,
+                                  size: size!,
+                                  address: address));
+                        }
+                      : () {
+                          context.read<PaymentBloc>().add(
+                              PaymentThroughWalletForCartEvent(
+                                  models: models!,
+                                  counts: counts!,
+                                  sizes: sizes!,
+                                  prices: prices!,
+                                  address: address,
+                                  total: totalamount));
+                        },
                   buttonTxt:
                       isloading ? 'Payment Processing' : 'Pay With Wallet',
                   color: Colors.black,

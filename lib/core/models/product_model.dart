@@ -18,25 +18,26 @@ class ProductModel {
   bool cod;
   List<String> imagepath;
   int? count;
+  String? selectedsize;
 
-  ProductModel({
-    this.productId,
-    required this.description,
-    required this.price,
-    required this.category,
-    required this.name,
-    required this.brand,
-    required this.quantity,
-    required this.small,
-    required this.medium,
-    required this.large,
-    required this.xl,
-    required this.xxl,
-    required this.available,
-    required this.offeritem,
-    required this.cod,
-    required this.imagepath,
-  });
+  ProductModel(
+      {this.productId,
+      required this.description,
+      required this.price,
+      required this.category,
+      required this.name,
+      required this.brand,
+      required this.quantity,
+      required this.small,
+      required this.medium,
+      required this.large,
+      required this.xl,
+      required this.xxl,
+      required this.available,
+      required this.offeritem,
+      required this.cod,
+      required this.imagepath,
+      this.selectedsize});
 
   factory ProductModel.fromDocument(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;

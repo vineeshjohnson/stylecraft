@@ -2,6 +2,7 @@ import 'package:finalproject/features/cart/presentation/bloc/cart_fav_bloc.dart'
 import 'package:finalproject/features/cart/presentation/widgets/fav_product_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 
 class FavProducts extends StatelessWidget {
   const FavProducts({
@@ -15,9 +16,10 @@ class FavProducts extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           if (state is FavLoadingState) {
-            return const Scaffold(
+            return Scaffold(
               body: Center(
-                child: CircularProgressIndicator(),
+                child: Lottie.asset("assets/images/loading2.json",
+                    width: double.infinity, height: 300),
               ),
             );
           } else if (state is FavFetchedState) {
