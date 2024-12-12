@@ -144,7 +144,8 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
       'createdAT': DateTime.now(),
       'imagepath': userModel.imagepath,
       'cart2': {},
-      'favorites': []
+      'favorites': [],
+      'Wallet': 0
     });
   }
 

@@ -3,6 +3,7 @@ import 'package:finalproject/core/usecases/common_widgets/confirm_dialogues.dart
 import 'package:finalproject/core/usecases/common_widgets/elevated_button.dart';
 import 'package:finalproject/core/usecases/common_widgets/sized_box.dart';
 import 'package:finalproject/core/usecases/common_widgets/textform_field.dart';
+import 'package:finalproject/features/products/presentation/widgets/appbar_widget.dart';
 import 'package:finalproject/features/profile/bloc/userprofile_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,10 +42,11 @@ class UserProfilePage extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
-            appBar: AppBar(
-              title: const Text('User Profile'),
-              centerTitle: true,
-              backgroundColor: Colors.blueAccent,
+            appBar: const PreferredSize(
+              preferredSize: Size.fromHeight(100),
+              child: AppBarWidget(
+                title: 'User Profile',
+              ),
             ),
             body: SingleChildScrollView(
               child: Padding(

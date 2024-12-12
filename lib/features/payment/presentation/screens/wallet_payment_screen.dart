@@ -7,6 +7,8 @@ import 'package:finalproject/features/payment/presentation/screens/success_scree
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../products/presentation/widgets/appbar_widget.dart';
+
 class WalletPaymentScreen extends StatelessWidget {
   WalletPaymentScreen(
       {super.key,
@@ -54,14 +56,15 @@ class WalletPaymentScreen extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.blueAccent,
-              leading: IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.arrow_back)),
-              title: const Text('Wallet Payment'),
+            appBar: const PreferredSize(
+              preferredSize: Size.fromHeight(100),
+              child: AppBarWidget(
+                title: 'Wallet Payment',
+              ),
             ),
             body: Column(
               children: [
+                kheight30,
                 Container(
                   height: 90,
                   width: double.infinity,
@@ -165,7 +168,7 @@ class WalletPaymentScreen extends StatelessWidget {
                                         fontWeight: FontWeight.bold),
                                   )
                                 : Text(
-                                    '${model!.count}',
+                                    '${count}',
                                     style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
@@ -207,31 +210,59 @@ class WalletPaymentScreen extends StatelessWidget {
                   ),
                 ),
                 kheight30,
-                NormalButton(
-                  onTap: models == null
-                      ? () {
-                          context.read<PaymentBloc>().add(
-                              WalletPaymentProceedEvent(
-                                  count: count!,
-                                  price: totalamount,
-                                  productid: model!.productId!,
-                                  size: size!,
-                                  address: address));
-                        }
-                      : () {
-                          context.read<PaymentBloc>().add(
-                              PaymentThroughWalletForCartEvent(
-                                  models: models!,
-                                  counts: counts!,
-                                  sizes: sizes!,
-                                  prices: prices!,
-                                  address: address,
-                                  total: totalamount));
-                        },
-                  buttonTxt:
-                      isloading ? 'Payment Processing' : 'Pay With Wallet',
-                  color: Colors.black,
-                )
+                totalamount <= walletmoney
+                    ? NormalButton(
+                        onTap: models == null
+                            ? () {
+                                context.read<PaymentBloc>().add(
+                                    WalletPaymentProceedEvent(
+                                        count: count!,
+                                        price: totalamount,
+                                        productid: model!.productId!,
+                                        size: size!,
+                                        address: address));
+                              }
+                            : () {
+                                context.read<PaymentBloc>().add(
+                                    PaymentThroughWalletForCartEvent(
+                                        models: models!,
+                                        counts: counts!,
+                                        sizes: sizes!,
+                                        prices: prices!,
+                                        address: address,
+                                        total: totalamount));
+                              },
+                        buttonTxt: isloading
+                            ? 'Payment Processing'
+                            : 'Pay With Wallet',
+                        color: Colors.black,
+                      )
+                    : Container(
+                        height: 150,
+                        width: double.infinity,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                  textAlign: TextAlign.center,
+                                  'Your Account Doesnt Have Sufficient Wallet Coins for Purchase this order',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 24,
+                                      fontFamily: font2)),
+                            ),
+                            NormalButton(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              buttonTxt: 'Cancel',
+                              color: Colors.red,
+                            )
+                          ],
+                        ),
+                      )
               ],
             ),
           );

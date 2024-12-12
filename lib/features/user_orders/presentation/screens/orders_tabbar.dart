@@ -12,14 +12,6 @@ class UserOrdersPage extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
-            "Order History",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-            ),
-          ),
           centerTitle: true,
           backgroundColor: Colors.black,
           elevation: 5,

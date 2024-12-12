@@ -29,14 +29,8 @@ class OrderSuccessPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              SizedBox(
-                height: 250,
-                width: double.infinity,
-                child: Lottie.asset('assets/images/orderplaced.json'),
-              ),
-              kheight40,
-              const SizedBox(height: 20),
               const Text(
                 "Thank you for your order!",
                 style: TextStyle(
@@ -45,6 +39,31 @@ class OrderSuccessPage extends StatelessWidget {
                   color: Colors.black87,
                 ),
                 textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: 250,
+                width: double.infinity,
+                child: Lottie.asset('assets/images/orderplaced.json'),
+              ),
+              kheight40,
+              const SizedBox(height: 20),
+              Container(
+                margin: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    border: Border.all(),
+                    borderRadius: BorderRadius.circular(20)),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    "Your Order Placed Successfully Track Your Order For More Info",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               const SizedBox(height: 10),
@@ -58,6 +77,10 @@ class OrderSuccessPage extends StatelessWidget {
                 style: TextStyle(fontSize: 16, color: Colors.grey[600]),
               ),
               const SizedBox(height: 10),
+              Text(
+                "Order ID: $orderId",
+                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+              ),
               Text(
                 walletAmount != null ? "Wallet Balance: ₹$walletAmount" : '',
                 style: const TextStyle(
@@ -79,23 +102,10 @@ class OrderSuccessPage extends StatelessWidget {
                 ),
                 child: const Text(
                   "Continue Shopping",
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
               const SizedBox(height: 20),
-              OutlinedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/orders');
-                },
-                style: OutlinedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                ),
-                child: const Text(
-                  "View Orders",
-                  style: TextStyle(fontSize: 16, color: Colors.green),
-                ),
-              ),
             ],
           ),
         ),

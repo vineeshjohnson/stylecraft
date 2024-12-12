@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:finalproject/core/models/ordermodel.dart';
 import 'package:finalproject/core/models/product_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 
 part 'userorders_event.dart';
 part 'userorders_state.dart';
@@ -44,12 +45,13 @@ class UserordersBloc extends Bloc<UserordersEvent, UserordersState> {
 
     on<OrderCancellationEvent>((event, emit) async {
       emit(LoadingState());
+      var cancelleddate = getTodayDateString();
       if (event.paymentmode == 'Wallet' ||
           event.paymentmode == 'Online Payment') {
         var v = await getUserWalletAmount();
         updateWalletAmount(event.model.uid, v! + event.model.price);
       }
-      updateFieldByOrderId(event.model.orderid!, true);
+      updateFieldByOrderId(event.model.orderid!, true, cancelleddate);
       updateCancelReason(event.model.orderid!, event.reason);
       emit(CancelledState(model: event.model));
     });
@@ -138,7 +140,8 @@ Future<List<ProductModel>> fetchProductsInOrders(
   }
 }
 
-Future<void> updateFieldByOrderId(String orderId, dynamic newValue) async {
+Future<void> updateFieldByOrderId(
+    String orderId, dynamic newValue, String cancelleddate) async {
   try {
     // Query the 'orders' collection for a document with the specific 'orderid'
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -149,7 +152,8 @@ Future<void> updateFieldByOrderId(String orderId, dynamic newValue) async {
     if (querySnapshot.docs.isNotEmpty) {
       DocumentReference docRef = querySnapshot.docs.first.reference;
 
-      await docRef.update({'cancelled': newValue});
+      await docRef
+          .update({'cancelled': newValue, 'cancelleddate': cancelleddate});
 
       print(
           "fieldName updated successfully to $newValue for order ID: $orderId");
@@ -221,4 +225,11 @@ Future<int?> getUserWalletAmount() async {
     print("Error fetching wallet amount: $e");
     return null;
   }
+}
+
+String getTodayDateString() {
+  DateTime now = DateTime.now();
+  String formattedDate =
+      DateFormat('dd-MMMM-yyyy').format(now); // Format as '12-January-2024'
+  return formattedDate;
 }

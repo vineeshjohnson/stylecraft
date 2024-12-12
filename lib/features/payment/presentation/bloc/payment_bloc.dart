@@ -54,7 +54,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       int updatedamount = v! - event.price;
       updateWalletAmount(uid, updatedamount);
       bool success = await saveOrder(order);
-      emit(WalletPurchasedState('49549449498', date, time, updatedamount,
+      emit(WalletPurchasedState(orderId, date, time, updatedamount,
           state: success));
     });
 
@@ -92,8 +92,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       var v = await getUserWalletAmount();
       int updatedamount = v! - event.total;
       updateWalletAmount(uid, updatedamount);
-      emit(WalletPurchasedState('49549449498', date, time, 5454454,
-          state: success!));
+      emit(WalletPurchasedState(orderId, date, time, 5454454, state: success!));
       removeProductFromCart();
     });
 
@@ -121,8 +120,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
           cancelreason: '');
 
       bool success = await saveOrder(order);
-      emit(WalletPurchasedState('49549449498', date, time, 5454454,
-          state: success));
+      emit(WalletPurchasedState(orderId, date, time, 5454454, state: success));
     });
 
     on<PaymentThroughCodForCartEvent>((event, emit) async {
@@ -156,8 +154,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         success = await saveOrder(allorders[i]);
       }
 
-      emit(WalletPurchasedState('49549449498', date, time, 5454454,
-          state: success!));
+      emit(WalletPurchasedState(orderId, date, time, 5454454, state: success!));
       removeProductFromCart();
     });
 
@@ -191,8 +188,10 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
             cancelled: false,
             cancelreason: '');
         bool success = await saveOrder(order);
-        emit(WalletPurchasedState('49549449498', date, time, 5454454,
-            state: success));
+        
+        
+        emit(
+            WalletPurchasedState(orderId, date, time, 5454454, state: success));
       } else if (response == 'Canceled') {
         emit(OnlinePaymentCancelState());
       }
@@ -236,7 +235,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         for (int i = 0; i < allorders.length; i++) {
           success = await saveOrder(allorders[i]);
         }
-        emit(WalletPurchasedState('49549449498', date, time, 5454454,
+        emit(WalletPurchasedState(orderId, date, time, 5454454,
             state: success!));
         removeProductFromCart();
       } else if (response == 'Canceled') {

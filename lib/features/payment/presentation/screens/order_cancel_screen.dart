@@ -31,6 +31,7 @@ class OrderCancelScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               const Text(
                 "We Cancelled Your order Successfully",
@@ -69,29 +70,16 @@ class OrderCancelScreen extends StatelessWidget {
                       builder: (context) => const BottomNavigationBars()));
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
+                  backgroundColor: Colors.black,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 ),
                 child: const Text(
                   "Continue Shopping",
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
               const SizedBox(height: 20),
-              OutlinedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/orders');
-                },
-                style: OutlinedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                ),
-                child: const Text(
-                  "View Details",
-                  style: TextStyle(fontSize: 16, color: Colors.green),
-                ),
-              ),
             ],
           ),
         ),

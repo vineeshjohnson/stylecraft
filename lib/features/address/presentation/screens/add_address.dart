@@ -169,10 +169,10 @@ class AddAddressScreen extends StatelessWidget {
                       Textformfields(
                         controller: landmarkController,
                         icon: const Icon(Icons.label),
-                        labeltext: 'Landmark',
+                        labeltext: 'District',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter a landmark';
+                            return 'Please enter a District';
                           }
                           return null;
                         },

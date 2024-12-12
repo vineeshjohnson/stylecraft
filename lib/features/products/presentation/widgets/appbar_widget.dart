@@ -12,15 +12,8 @@ class AppBarWidget extends StatelessWidget {
       height: 100,
       color: Colors.black,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-                size: 35,
-              )),
           Container(
             child: Text(
               title,
@@ -30,13 +23,6 @@ class AppBarWidget extends StatelessWidget {
                   fontFamily: 'NewAmsterdam'),
             ),
           ),
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.shopping_cart,
-                color: Colors.white,
-                size: 40,
-              ))
         ],
       ),
     );

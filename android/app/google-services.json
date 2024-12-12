@@ -58,6 +58,86 @@
           }
         },
         {
+          "client_id": "207169793598-7tflo9ktspmopcho9apm75j8etlf6v04.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.finalproject",
+            "certificate_hash": "b9d1002f21abd6921c3cecbf73eb801baf5af752"
+          }
+        },
+        {
+          "client_id": "207169793598-un9eb6dso394jm5qjim4navl1jg81tr0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpcKrhLR0AfK2uPkFn3YdsIDd7XmalPow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "207169793598-un9eb6dso394jm5qjim4navl1jg81tr0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "207169793598-s5k07ds5dpjsamgu60gmnagfp4v1deph.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.finalproject"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:207169793598:android:2fb5b18c73a2860db2ab6f",
+        "android_client_info": {
+          "package_name": "com.example.finalprojectadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "207169793598-un9eb6dso394jm5qjim4navl1jg81tr0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpcKrhLR0AfK2uPkFn3YdsIDd7XmalPow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "207169793598-un9eb6dso394jm5qjim4navl1jg81tr0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "207169793598-s5k07ds5dpjsamgu60gmnagfp4v1deph.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.finalproject"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:207169793598:android:568e3da0c27c8cd7b2ab6f",
+        "android_client_info": {
+          "package_name": "com.example.yourproject"
+        }
+      },
+      "oauth_client": [
+        {
           "client_id": "207169793598-un9eb6dso394jm5qjim4navl1jg81tr0.apps.googleusercontent.com",
           "client_type": 3
         }

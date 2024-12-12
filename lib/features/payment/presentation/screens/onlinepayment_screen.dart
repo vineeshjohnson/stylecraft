@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../../products/presentation/widgets/appbar_widget.dart';
+
 class OnlinepaymentScreen extends StatelessWidget {
   OnlinepaymentScreen(
       {super.key,
@@ -56,11 +58,11 @@ class OnlinepaymentScreen extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.blueAccent,
-              leading: IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.arrow_back)),
-              title: const Text('Online Payment'),
+            appBar: const PreferredSize(
+              preferredSize: Size.fromHeight(100),
+              child: AppBarWidget(
+                title: 'Online Payment',
+              ),
             ),
             body: Padding(
               padding: const EdgeInsets.all(8.0),
