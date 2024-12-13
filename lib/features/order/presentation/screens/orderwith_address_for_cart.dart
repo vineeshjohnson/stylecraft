@@ -6,6 +6,7 @@ import 'package:finalproject/core/usecases/strings/strings.dart';
 import 'package:finalproject/features/address/presentation/screens/add_address.dart';
 import 'package:finalproject/features/order/presentation/bloc/order_bloc.dart';
 import 'package:finalproject/features/payment/presentation/screens/payment_screen.dart';
+import 'package:finalproject/features/products/presentation/widgets/appbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -58,368 +59,376 @@ class OrderwithAddressForCart extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.blueAccent,
-              leading: IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.arrow_back)),
-              title: const Text('Order Summary'),
-            ),
-            body: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 30, horizontal: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
-                          children: [
-                            Icon(
-                              addresses.isNotEmpty
-                                  ? Icons.check_circle_outline
-                                  : Icons.dangerous,
-                              size: 30,
-                              color: Colors.blueAccent,
-                            ),
-                            const Text('Address')
-                          ],
-                        ),
-                        Container(
-                          height: 2,
-                          color: Colors.blueAccent,
-                          width: 95,
-                        ),
-                        const Column(
-                          children: [
-                            Icon(
-                              Icons.dangerous,
-                              size: 30,
-                              color: Colors.blueAccent,
-                            ),
-                            Text('Order Summary')
-                          ],
-                        ),
-                        Container(
-                          height: 2,
-                          color: Colors.blueAccent,
-                          width: 95,
-                        ),
-                        const Column(
-                          children: [
-                            Icon(
-                              Icons.dangerous,
-                              size: 30,
-                              color: Colors.blueAccent,
-                            ),
-                            Text('Payment')
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Divider(
-                    thickness: addresses.isNotEmpty ? 10 : 0,
-                  ),
-                  ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      primary: false,
-                      itemBuilder: addresses.isNotEmpty
-                          ? (BuildContext, index) => AddressWidget(
-                                address: addresses[index],
-                                index: index,
-                                selectedindex: selectedaddress,
-                              )
-                          : (BuildContext, index) => const AddAddressWidget(),
-                      separatorBuilder: (BuildContext, Index) => kheight10,
-                      itemCount: addresses.isNotEmpty ? addresses.length : 1),
-                  Divider(
-                    thickness: addresses.isNotEmpty ? 10 : 0,
-                  ),
-
-//body section
-
-                  ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      primary: false,
-                      itemBuilder: (context, index) => Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        height: 130,
-                                        width: 100,
-                                        decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                                image: NetworkImage(
-                                                    products![index]
-                                                        .imagepath[0]),
-                                                fit: BoxFit.fill)),
-                                      ),
-                                      const SizedBox(
-                                        width: 8,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            products![index].name,
-                                            style: const TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          Text(
-                                            'Size : ${products![index].selectedsize}',
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.grey.shade600),
-                                          ),
-                                          Text(
-                                            'Price: \u20B9${withoutdiscount[index]}',
-                                            style: const TextStyle(
-                                              decoration:
-                                                  TextDecoration.lineThrough,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 3,
-                                          ),
-                                          Text(
-                                            '\u20B9${cartproductprice[index]}',
-                                            style: addressstyle,
-                                          ),
-                                          SizedBox(
-                                            height: 35,
-                                            width: 150,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                IconButton(
-                                                    onPressed: () {
-                                                      context.read<OrderBloc>().add(
-                                                          CartCheckoutProductIncrimentEvent(
-                                                              index: index,
-                                                              counts:
-                                                                  cartproductcount,
-                                                              prices:
-                                                                  cartproductprice,
-                                                              product:
-                                                                  products!));
-                                                    },
-                                                    icon: const Icon(
-                                                      Icons.add_circle_outline,
-                                                      color: Colors.green,
-                                                      size: 25,
-                                                    )),
-                                                Text(
-                                                  cartproductcount[index]
-                                                      .toString(),
-                                                  style: const TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                IconButton(
-                                                    onPressed: cartproductcount[
-                                                                index] <
-                                                            2
-                                                        ? () {
-                                                            snackBar(context,
-                                                                'Minimum 1 product should select');
-                                                          }
-                                                        : () {
-                                                            context
-                                                                .read<
-                                                                    OrderBloc>()
-                                                                .add(CartCheckoutProductDecrimentEvent(
-                                                                    index:
-                                                                        index,
-                                                                    counts:
-                                                                        cartproductcount,
-                                                                    prices:
-                                                                        cartproductprice,
-                                                                    product:
-                                                                        products!));
-                                                          },
-                                                    icon: const Icon(
-                                                      Icons
-                                                          .remove_circle_outline,
-                                                      color: Colors.red,
-                                                      size: 25,
-                                                    ))
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                  kheight20,
-                                  const Text('Delivery by Nov 20, Wed.'),
-                                  Text('Shipping Charge  $rupee 40')
-                                ],
-                              ),
-                            ),
-                          ),
-                      separatorBuilder: (context, index) => kheight10,
-                      itemCount: products!.length),
-                  kheight10,
-                  Container(
-                    height: 60,
-                    width: double.infinity,
-                    decoration: BoxDecoration(color: Colors.blue.shade50),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
+          return SafeArea(
+            child: Scaffold(
+              appBar: const PreferredSize(
+                preferredSize: Size.fromHeight(100),
+                child: AppBarWidget(
+                  title: 'Check Out',
+                ),
+              ),
+              body: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 30, horizontal: 5),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          const Icon(
-                            Icons.credit_card,
-                            size: 30,
+                          Column(
+                            children: [
+                              Icon(
+                                addresses.isNotEmpty
+                                    ? Icons.check_circle_outline
+                                    : Icons.dangerous,
+                                size: 30,
+                                color: Colors.blueAccent,
+                              ),
+                              const Text('Address')
+                            ],
                           ),
-                          Text(
-                            'Continue to the Next page for Payments',
-                            style: addressstyle,
-                          )
+                          Container(
+                            height: 2,
+                            color: Colors.blueAccent,
+                            width: 95,
+                          ),
+                          const Column(
+                            children: [
+                              Icon(
+                                Icons.dangerous,
+                                size: 30,
+                                color: Colors.blueAccent,
+                              ),
+                              Text('Order Summary')
+                            ],
+                          ),
+                          Container(
+                            height: 2,
+                            color: Colors.blueAccent,
+                            width: 95,
+                          ),
+                          const Column(
+                            children: [
+                              Icon(
+                                Icons.dangerous,
+                                size: 30,
+                                color: Colors.blueAccent,
+                              ),
+                              Text('Payment')
+                            ],
+                          ),
                         ],
                       ),
                     ),
-                  ),
-                  SizedBox(
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Price Details',
-                              style: addressstyle,
-                            ),
-                            kheight20,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Price ($totalcartcount item)'),
-                                Text('$rupee $totalcartprice')
-                              ],
-                            ),
-                            kheight10,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text('Discount'),
-                                Text('$rupee $cartproductdiscound')
-                              ],
-                            ),
-                            kheight10,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text('Shipping Charge'),
-                                Text('$rupee 40')
-                              ],
-                            ),
-                            kheight20,
-                            const Divider(
-                              thickness: 2,
-                            ),
-                            kheight20,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Total Amount',
-                                  style: addressstyle,
-                                ),
-                                Text(
-                                  '$rupee ${totalcartprice + 40}',
-                                  style: addressstyle,
+                    Divider(
+                      thickness: addresses.isNotEmpty ? 10 : 0,
+                    ),
+                    ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        primary: false,
+                        itemBuilder: addresses.isNotEmpty
+                            ? (BuildContext, index) => AddressWidget(
+                                  address: addresses[index],
+                                  index: index,
+                                  selectedindex: selectedaddress,
                                 )
-                              ],
+                            : (BuildContext, index) => const AddAddressWidget(),
+                        separatorBuilder: (BuildContext, Index) => kheight10,
+                        itemCount: addresses.isNotEmpty ? addresses.length : 1),
+                    Divider(
+                      thickness: addresses.isNotEmpty ? 10 : 0,
+                    ),
+
+                    //body section
+
+                    ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        primary: false,
+                        itemBuilder: (context, index) => Container(
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          height: 130,
+                                          width: 100,
+                                          decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      products![index]
+                                                          .imagepath[0]),
+                                                  fit: BoxFit.fill)),
+                                        ),
+                                        const SizedBox(
+                                          width: 8,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              products![index].name,
+                                              style: const TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              'Size : ${products![index].selectedsize}',
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.grey.shade600),
+                                            ),
+                                            Text(
+                                              'Price: \u20B9${withoutdiscount[index]}',
+                                              style: const TextStyle(
+                                                decoration:
+                                                    TextDecoration.lineThrough,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 3,
+                                            ),
+                                            Text(
+                                              '\u20B9${cartproductprice[index]}',
+                                              style: addressstyle,
+                                            ),
+                                            SizedBox(
+                                              height: 35,
+                                              width: 150,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  IconButton(
+                                                      onPressed: () {
+                                                        context
+                                                            .read<OrderBloc>()
+                                                            .add(CartCheckoutProductIncrimentEvent(
+                                                                index: index,
+                                                                counts:
+                                                                    cartproductcount,
+                                                                prices:
+                                                                    cartproductprice,
+                                                                product:
+                                                                    products!));
+                                                      },
+                                                      icon: const Icon(
+                                                        Icons
+                                                            .add_circle_outline,
+                                                        color: Colors.green,
+                                                        size: 25,
+                                                      )),
+                                                  Text(
+                                                    cartproductcount[index]
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  IconButton(
+                                                      onPressed:
+                                                          cartproductcount[
+                                                                      index] <
+                                                                  2
+                                                              ? () {
+                                                                  snackBar(
+                                                                      context,
+                                                                      'Minimum 1 product should select');
+                                                                }
+                                                              : () {
+                                                                  context.read<OrderBloc>().add(CartCheckoutProductDecrimentEvent(
+                                                                      index:
+                                                                          index,
+                                                                      counts:
+                                                                          cartproductcount,
+                                                                      prices:
+                                                                          cartproductprice,
+                                                                      product:
+                                                                          products!));
+                                                                },
+                                                      icon: const Icon(
+                                                        Icons
+                                                            .remove_circle_outline,
+                                                        color: Colors.red,
+                                                        size: 25,
+                                                      ))
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    kheight20,
+                                    const Text('Delivery by Nov 20, Wed.'),
+                                    Text('Shipping Charge  $rupee 40')
+                                  ],
+                                ),
+                              ),
                             ),
-                            kheight20,
-                            const Divider(
-                              thickness: 2,
+                        separatorBuilder: (context, index) => kheight10,
+                        itemCount: products!.length),
+                    kheight10,
+                    Container(
+                      height: 60,
+                      width: double.infinity,
+                      decoration: BoxDecoration(color: Colors.blue.shade50),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Icon(
+                              Icons.credit_card,
+                              size: 30,
                             ),
-                            kheight20,
                             Text(
-                              'You will save $rupee $cartproductdiscound in this order',
+                              'Continue to the Next page for Payments',
                               style: addressstyle,
-                            ),
-                            kheight10,
+                            )
                           ],
                         ),
-                      )),
-                  Container(
-                    color: Colors.grey.shade200,
-                    width: double.infinity,
-                    height: 80,
-                    child: const Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Icon(Icons.assured_workload),
-                          Text(
-                              'Safe and Secure payment & 100 % Authentic Products')
-                        ],
                       ),
                     ),
-                  )
-                ],
-              ),
-            ),
-            bottomNavigationBar: BottomAppBar(
-                color: Colors.grey.shade300,
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '$rupee $totalcartprice',
-                        style: const TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold),
+                    SizedBox(
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Price Details',
+                                style: addressstyle,
+                              ),
+                              kheight20,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('Price ($totalcartcount item)'),
+                                  Text('$rupee $totalcartprice')
+                                ],
+                              ),
+                              kheight10,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text('Discount'),
+                                  Text('$rupee $cartproductdiscound')
+                                ],
+                              ),
+                              kheight10,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text('Shipping Charge'),
+                                  Text('$rupee 40')
+                                ],
+                              ),
+                              kheight20,
+                              const Divider(
+                                thickness: 2,
+                              ),
+                              kheight20,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Total Amount',
+                                    style: addressstyle,
+                                  ),
+                                  Text(
+                                    '$rupee ${totalcartprice + 40}',
+                                    style: addressstyle,
+                                  )
+                                ],
+                              ),
+                              kheight20,
+                              const Divider(
+                                thickness: 2,
+                              ),
+                              kheight20,
+                              Text(
+                                'You will save $rupee $cartproductdiscound in this order',
+                                style: addressstyle,
+                              ),
+                              kheight10,
+                            ],
+                          ),
+                        )),
+                    Container(
+                      color: Colors.grey.shade200,
+                      width: double.infinity,
+                      height: 80,
+                      child: const Padding(
+                        padding: EdgeInsets.all(12.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(Icons.assured_workload),
+                            Text(
+                                'Safe and Secure payment & 100 % Authentic Products')
+                          ],
+                        ),
                       ),
-                      NormalButton(
-                        onTap: addresses.isEmpty
-                            ? () {
-                                snackBar(context, 'Choose Any Address');
-                              }
-                            : () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => PaymentScreen(
-                                          address: addresses[selectedaddress],
-                                          discount: cartproductdiscound,
-                                          total: totalcartprice,
-                                          sizes: sizes,
-                                          productcounts: cartproductcount,
-                                          productprices: cartproductprice,
-                                          products: products,
-                                        )));
-                              },
-                        buttonTxt: 'Continue',
-                        color: addresses.isNotEmpty
-                            ? Colors.orangeAccent
-                            : Colors.grey,
-                      )
-                    ],
-                  ),
-                )),
+                    )
+                  ],
+                ),
+              ),
+              bottomNavigationBar: BottomAppBar(
+                  color: Colors.grey.shade300,
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '$rupee $totalcartprice',
+                          style: const TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold),
+                        ),
+                        NormalButton(
+                          onTap: addresses.isEmpty
+                              ? () {
+                                  snackBar(context, 'Choose Any Address');
+                                }
+                              : () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => PaymentScreen(
+                                            address: addresses[selectedaddress],
+                                            discount: cartproductdiscound,
+                                            total: totalcartprice,
+                                            sizes: sizes,
+                                            productcounts: cartproductcount,
+                                            productprices: cartproductprice,
+                                            products: products,
+                                          )));
+                                },
+                          buttonTxt: 'Continue',
+                          color: addresses.isNotEmpty
+                              ? Colors.orangeAccent
+                              : Colors.grey,
+                        )
+                      ],
+                    ),
+                  )),
+            ),
           );
         },
       ),

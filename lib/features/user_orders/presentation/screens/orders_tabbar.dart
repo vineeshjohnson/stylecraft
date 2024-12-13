@@ -13,48 +13,40 @@ class UserOrdersPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
+          elevation: 2,
           backgroundColor: Colors.black,
-          elevation: 5,
-          bottom: const TabBar(
-            indicator: BoxDecoration(
-              shape: BoxShape.rectangle,
+          title: const Text(
+            'Your Orders',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
               color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-              ),
             ),
-            labelColor: Colors.deepPurple,
-            unselectedLabelColor: Colors.white70,
+          ),
+          bottom: const TabBar(
+            indicatorColor: Colors.white,
+            indicatorWeight: 3,
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.grey,
             labelStyle: TextStyle(
-              fontSize: 15,
+              fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
             unselectedLabelStyle: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.normal,
+              fontSize: 14,
             ),
             tabs: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                child: Tab(
-                  icon: Icon(Icons.hourglass_empty, size: 24),
-                  text: "Ongoing",
-                ),
+              Tab(
+                icon: Icon(Icons.hourglass_empty, size: 24),
+                text: "Ongoing",
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                child: Tab(
-                  icon: Icon(Icons.done_all, size: 24),
-                  text: "Completed",
-                ),
+              Tab(
+                icon: Icon(Icons.done_all, size: 24),
+                text: "Completed",
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                child: Tab(
-                  icon: Icon(Icons.cancel, size: 24),
-                  text: "Cancelled",
-                ),
+              Tab(
+                icon: Icon(Icons.cancel, size: 24),
+                text: "Cancelled",
               ),
             ],
           ),

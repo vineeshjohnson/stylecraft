@@ -6,6 +6,7 @@ import 'package:finalproject/features/user_orders/presentation/bloc/userorders_b
 import 'package:finalproject/features/user_orders/presentation/screens/order_detailed_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CompletedOrders extends StatelessWidget {
@@ -94,12 +95,19 @@ class CompletedOrders extends StatelessWidget {
                   ),
                   separatorBuilder: (context, index) =>
                       const SizedBox(height: 20),
-                  itemCount: 5,
+                  itemCount: 3,
                 ),
               ),
             );
           }
-          return Scaffold(
+          return products.isEmpty
+              ? Scaffold(
+                  backgroundColor: Colors.black,
+                  body: Center(
+                    child: Lottie.asset('assets/images/noproduct.json'),
+                  ),
+                )
+              : Scaffold(
             backgroundColor: Colors.black,
             body: Padding(
               padding: const EdgeInsets.all(8.0),

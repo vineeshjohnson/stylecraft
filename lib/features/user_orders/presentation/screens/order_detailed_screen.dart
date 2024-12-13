@@ -147,7 +147,7 @@ class OrderDetailedScreen extends StatelessWidget {
                     SizedBox(
                         width: double.infinity,
                         child: ListView.separated(
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemBuilder: (contex, index) => Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -171,7 +171,7 @@ class OrderDetailedScreen extends StatelessWidget {
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      Spacer(),
+                                      const Spacer(),
                                       Text(
                                         d[index],
                                         style: const TextStyle(
@@ -220,9 +220,9 @@ class OrderDetailedScreen extends StatelessWidget {
                           ),
                           kheight10,
                           Padding(
-                            padding: EdgeInsets.only(right: 50),
+                            padding: const EdgeInsets.only(right: 50),
                             child: Text(
-                                style: TextStyle(
+                                style: const TextStyle(
                                     wordSpacing: 2,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500),
@@ -292,19 +292,39 @@ class OrderDetailedScreen extends StatelessWidget {
                       margin: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 8),
                       width: double.infinity,
-                      child: Row(
+                      child: Column(
                         children: [
-                          Text(
-                            'Payment Mode : $paymentMode',
-                            style: addressstyle,
+                          Row(
+                            children: [
+                              Text(
+                                'Payment Mode : $paymentMode',
+                                style: addressstyle,
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                "$rupee${ordermodel.price}",
+                                style: addressstyle,
+                              )
+                            ],
                           ),
-                          const SizedBox(
-                            width: 15,
+                          kheight10,
+                          Row(
+                            children: [
+                              Text(
+                                'Estimate Delivery Date',
+                                style: addressstyle,
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                ordermodel.estimatedeliverydate!,
+                                style: TextStyle(color: Colors.green),
+                              )
+                            ],
                           ),
-                          Text(
-                            "$rupee${ordermodel.price}",
-                            style: addressstyle,
-                          )
                         ],
                       ),
                     ),

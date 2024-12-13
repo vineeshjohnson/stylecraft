@@ -35,6 +35,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       String uid = user!.uid;
       String date = getTodayDateString();
       String time = getCurrentTimeString();
+      String estimatedate = calculateNext5thDay(date);
+
       OrderModel order = OrderModel(
           address: event.address,
           size: event.size,
@@ -49,7 +51,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
           confirmed: true,
           orderid: orderId,
           cancelled: false,
-          cancelreason: '');
+          cancelreason: '',
+          estimatedeliverydate: estimatedate);
       var v = await getUserWalletAmount();
       int updatedamount = v! - event.price;
       updateWalletAmount(uid, updatedamount);
@@ -66,6 +69,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       String uid = user!.uid;
       String date = getTodayDateString();
       String time = getCurrentTimeString();
+      String estimatedate = calculateNext5thDay(date);
+
       List<OrderModel> allorders = [];
       for (int i = 0; i < event.models.length; i++) {
         OrderModel order = OrderModel(
@@ -82,7 +87,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
             confirmed: true,
             orderid: orderId,
             cancelled: false,
-            cancelreason: '');
+            cancelreason: '',
+            estimatedeliverydate: estimatedate);
         allorders.add(order);
       }
       bool? success;
@@ -103,6 +109,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       String uid = user!.uid;
       String date = getTodayDateString();
       String time = getCurrentTimeString();
+      String estimatedate = calculateNext5thDay(date);
+
       OrderModel order = OrderModel(
           address: event.address,
           size: event.size,
@@ -117,7 +125,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
           confirmed: true,
           orderid: orderId,
           cancelled: false,
-          cancelreason: '');
+          cancelreason: '',
+          estimatedeliverydate: estimatedate);
 
       bool success = await saveOrder(order);
       emit(WalletPurchasedState(orderId, date, time, 5454454, state: success));
@@ -130,6 +139,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       String uid = user!.uid;
       String date = getTodayDateString();
       String time = getCurrentTimeString();
+      String estimatedate = calculateNext5thDay(date);
+
       List<OrderModel> allorders = [];
       for (int i = 0; i < event.models.length; i++) {
         OrderModel order = OrderModel(
@@ -146,7 +157,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
             confirmed: true,
             orderid: orderId,
             cancelled: false,
-            cancelreason: '');
+            cancelreason: '',
+            estimatedeliverydate: estimatedate);
         allorders.add(order);
       }
       bool? success;
@@ -172,6 +184,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         String uid = user!.uid;
         String date = getTodayDateString();
         String time = getCurrentTimeString();
+        String estimatedate = calculateNext5thDay(date);
+
         OrderModel order = OrderModel(
             address: event.address,
             size: event.size,
@@ -186,10 +200,10 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
             confirmed: true,
             orderid: orderId,
             cancelled: false,
-            cancelreason: '');
+            cancelreason: '',
+            estimatedeliverydate: estimatedate);
         bool success = await saveOrder(order);
-        
-        
+
         emit(
             WalletPurchasedState(orderId, date, time, 5454454, state: success));
       } else if (response == 'Canceled') {
@@ -212,6 +226,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         String uid = user!.uid;
         String date = getTodayDateString();
         String time = getCurrentTimeString();
+        String estimatedate = calculateNext5thDay(date);
+
         List<OrderModel> allorders = [];
         for (int i = 0; i < event.models.length; i++) {
           OrderModel order = OrderModel(
@@ -228,7 +244,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
               confirmed: true,
               orderid: orderId,
               cancelled: false,
-              cancelreason: '');
+              cancelreason: '',
+              estimatedeliverydate: estimatedate);
           allorders.add(order);
         }
         bool? success;
@@ -296,7 +313,7 @@ Future<bool> saveOrder(OrderModel order) async {
       'shippeddate': '',
       'outfordeliverydate': '',
       'completeddate': '',
-      'estimatedeliverydate': '',
+      'estimatedeliverydate': order.estimatedeliverydate,
       'cancelleddate': ''
     };
 
@@ -437,5 +454,23 @@ Future<void> removeProductFromCart() async {
     print('Product removed successfully!');
   } catch (e) {
     print('Error removing product: $e');
+  }
+}
+
+String calculateNext5thDay(String inputDate) {
+  // Define the date format
+  final DateFormat dateFormat = DateFormat("dd-MMMM-yyyy");
+
+  try {
+    // Parse the input date string into a DateTime object
+    final DateTime parsedDate = dateFormat.parse(inputDate);
+
+    // Add 5 days to the parsed date
+    final DateTime next5thDay = parsedDate.add(const Duration(days: 5));
+
+    // Return the new date as a formatted string
+    return dateFormat.format(next5thDay);
+  } catch (e) {
+    return "Invalid date format: $e";
   }
 }

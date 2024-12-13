@@ -3,7 +3,7 @@ import 'package:finalproject/features/bottom_nav/presentation/widgets/bottom_nav
 import 'package:finalproject/features/cart/presentation/widgets/tabbar.dart';
 import 'package:finalproject/features/home/presentation/screens/home_screen_view/home_view.dart';
 import 'package:finalproject/features/user_orders/presentation/screens/orders_tabbar.dart';
-import 'package:finalproject/trial_screen.dart';
+import 'package:finalproject/features/user_profile/screens/user_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

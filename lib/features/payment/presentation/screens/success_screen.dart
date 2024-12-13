@@ -48,12 +48,12 @@ class OrderSuccessPage extends StatelessWidget {
               kheight40,
               const SizedBox(height: 20),
               Container(
-                margin: EdgeInsets.all(5),
+                margin: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
                     border: Border.all(),
                     borderRadius: BorderRadius.circular(20)),
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
+                child: const Padding(
+                  padding: EdgeInsets.all(12.0),
                   child: Text(
                     "Your Order Placed Successfully Track Your Order For More Info",
                     style: TextStyle(

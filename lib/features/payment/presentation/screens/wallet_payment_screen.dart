@@ -168,7 +168,7 @@ class WalletPaymentScreen extends StatelessWidget {
                                         fontWeight: FontWeight.bold),
                                   )
                                 : Text(
-                                    '${count}',
+                                    '$count',
                                     style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
@@ -237,7 +237,7 @@ class WalletPaymentScreen extends StatelessWidget {
                             : 'Pay With Wallet',
                         color: Colors.black,
                       )
-                    : Container(
+                    : SizedBox(
                         height: 150,
                         width: double.infinity,
                         child: Column(

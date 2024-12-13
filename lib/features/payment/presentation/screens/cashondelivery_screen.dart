@@ -10,41 +10,42 @@ import 'package:lottie/lottie.dart';
 
 import '../../../products/presentation/widgets/appbar_widget.dart';
 
-class CashondeliveryScreen extends StatelessWidget {
-  CashondeliveryScreen(
-      {super.key,
-      this.count,
-      required this.totalamount,
-      this.model,
-      this.size,
-      required this.address,
-      this.counts,
-      this.models,
-      this.prices,
-      this.sizes});
+class CashOnDeliveryScreen extends StatelessWidget {
+  CashOnDeliveryScreen({
+    super.key,
+    this.count,
+    required this.totalAmount,
+    this.model,
+    this.size,
+    required this.address,
+    this.counts,
+    this.models,
+    this.prices,
+    this.sizes,
+  });
 
   final int? count;
-  final int totalamount;
+  final int totalAmount;
   final ProductModel? model;
   final String? size;
   final List<String> address;
-  List<int>? counts;
-  List<ProductModel>? models;
-  List<String>? sizes;
-  List<int>? prices;
+  final List<int>? counts;
+  final List<ProductModel>? models;
+  final List<String>? sizes;
+  final List<int>? prices;
+
   @override
   Widget build(BuildContext context) {
-    bool isloading = false;
+    bool isLoading = false;
 
     return BlocProvider(
       create: (context) => PaymentBloc(),
       child: BlocConsumer<PaymentBloc, PaymentState>(
         listener: (context, state) {
           if (state is LoadingState) {
-            isloading = true;
+            isLoading = true;
           } else if (state is WalletPurchasedState) {
-            isloading = false;
-
+            isLoading = false;
             navigateTo(context, state);
           }
         },
@@ -57,40 +58,56 @@ class CashondeliveryScreen extends StatelessWidget {
               ),
             ),
             body: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  kheight20,
                   Text(
                     'Confirm Cash On Delivery Order',
-                    style: TextStyle(fontSize: 30, fontFamily: font2),
-                  ),
-                  Container(
-                    child: Lottie.asset(
-                      'assets/images/cod.json', // Path to your Lottie file
-                      width: double.infinity, // Set desired width
-                      height: 300, // Set desired height
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontFamily: font2,
+                      fontWeight: FontWeight.bold,
                     ),
+                    textAlign: TextAlign.center,
                   ),
-                  kheight30,
+                  const SizedBox(height: 20),
+                  Lottie.asset(
+                    'assets/images/cod.json',
+                    width: double.infinity,
+                    height: 250,
+                  ),
+                  const SizedBox(height: 30),
                   Container(
+                    padding: const EdgeInsets.all(16.0),
                     height: 200,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(30)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          textAlign: TextAlign.center,
-                          'Pay Via Upi or Cash when you \n receive your order',
-                          style: TextStyle(fontFamily: font4, fontSize: 40),
-                        )
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.shade400,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
+                        ),
                       ],
                     ),
+                    child: Center(
+                      child: Text(
+                        'Pay via UPI or Cash when you receive your order',
+                        style: TextStyle(
+                          fontFamily: font4,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          height: 1.5,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                   ),
-                  kheight20,
+                  const SizedBox(height: 30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -101,32 +118,39 @@ class CashondeliveryScreen extends StatelessWidget {
                         buttonTxt: 'Cancel',
                         color: Colors.redAccent,
                       ),
-                      NormalButton(
-                        onTap: models == null
-                            ? () {
-                                context.read<PaymentBloc>().add(
-                                    CodPaymentProceedEvent(
-                                        count: count!,
-                                        price: totalamount,
-                                        productid: model!.productId!,
-                                        size: size!,
-                                        address: address));
-                              }
-                            : () {
-                                context.read<PaymentBloc>().add(
-                                    PaymentThroughCodForCartEvent(
-                                        models: models!,
-                                        counts: counts!,
-                                        sizes: sizes!,
-                                        prices: prices!,
-                                        address: address,
-                                        total: totalamount));
-                              },
-                        buttonTxt: isloading ? 'Processing' : 'Confirm Order',
-                        color: Colors.greenAccent.shade700,
-                      )
+                      isLoading
+                          ? CircularProgressIndicator()
+                          : NormalButton(
+                              onTap: models == null
+                                  ? () {
+                                      context.read<PaymentBloc>().add(
+                                            CodPaymentProceedEvent(
+                                              count: count!,
+                                              price: totalAmount,
+                                              productid: model!.productId!,
+                                              size: size!,
+                                              address: address,
+                                            ),
+                                          );
+                                    }
+                                  : () {
+                                      context.read<PaymentBloc>().add(
+                                            PaymentThroughCodForCartEvent(
+                                              models: models!,
+                                              counts: counts!,
+                                              sizes: sizes!,
+                                              prices: prices!,
+                                              address: address,
+                                              total: totalAmount,
+                                            ),
+                                          );
+                                    },
+                              buttonTxt:
+                                  isLoading ? 'Processing...' : 'Confirm Order',
+                              color: Colors.green.shade700,
+                            ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -139,11 +163,13 @@ class CashondeliveryScreen extends StatelessWidget {
 
 Future<void> navigateTo(BuildContext context, WalletPurchasedState state) {
   return Navigator.of(context).pushAndRemoveUntil(
-      (MaterialPageRoute(
-          builder: (context) => OrderSuccessPage(
-                orderId: state.orderId,
-                orderDate: state.orderDate,
-                orderTime: state.orderTime,
-              ))),
-      (route) => false);
+    MaterialPageRoute(
+      builder: (context) => OrderSuccessPage(
+        orderId: state.orderId,
+        orderDate: state.orderDate,
+        orderTime: state.orderTime,
+      ),
+    ),
+    (route) => false,
+  );
 }

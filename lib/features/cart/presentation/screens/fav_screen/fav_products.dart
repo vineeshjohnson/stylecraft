@@ -8,6 +8,7 @@ class FavProducts extends StatelessWidget {
   const FavProducts({
     super.key,
   });
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -17,43 +18,69 @@ class FavProducts extends StatelessWidget {
         builder: (context, state) {
           if (state is FavLoadingState) {
             return Scaffold(
+              backgroundColor: Colors.black,
               body: Center(
-                child: Lottie.asset("assets/images/loading2.json",
-                    width: double.infinity, height: 300),
+                child: Lottie.asset(
+                  "assets/images/loading.json",
+                  width: double.infinity,
+                  height: 300,
+                  fit: BoxFit.contain,
+                ),
               ),
             );
           } else if (state is FavFetchedState) {
             if (state.productmodels.isEmpty) {
-              return const Scaffold(
+              return Scaffold(
+                backgroundColor: Colors.black,
                 body: Center(
                   child: Text(
-                    'Your Wish List is empty!',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    'Your Wish List is Empty!',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               );
             } else {
               return SafeArea(
                 child: Scaffold(
-                    body: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GridView.builder(
-                            itemCount: state.productmodels.length,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: 0.6,
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 5,
-                                    crossAxisSpacing: 5),
-                            itemBuilder: (BuildContext context, int index) =>
-                                AlternativeProductWidget(
-                                  product: state.productmodels[index],
-                                )))),
+                  backgroundColor: Colors.black,
+                  body: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GridView.builder(
+                      itemCount: state.productmodels.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        childAspectRatio: 0.6,
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 8,
+                        crossAxisSpacing: 8,
+                      ),
+                      itemBuilder: (BuildContext context, int index) {
+                        return AlternativeProductWidget(
+                          product: state.productmodels[index],
+                        );
+                      },
+                    ),
+                  ),
+                ),
               );
             }
           } else {
-            return const Scaffold(
-                body: Center(child: Text('no products found')));
+            return Scaffold(
+              backgroundColor: Colors.black,
+              body: const Center(
+                child: Text(
+                  'No Products Found',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            );
           }
         },
       ),

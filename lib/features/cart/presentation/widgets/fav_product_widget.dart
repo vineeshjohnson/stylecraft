@@ -23,58 +23,57 @@ class AlternativeProductWidget extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: Colors.blueAccent), // Border styling
-          borderRadius: BorderRadius.circular(10), // Rounded corners
+          color:
+              Colors.grey.shade900, // Slightly lighter than black for contrast
+          borderRadius: BorderRadius.circular(12), // Rounded corners
         ),
-        height: 100, // Height of the widget
-        width: 50, // Width of the widget
         margin: const EdgeInsets.all(8.0), // Margin for spacing
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Product brand and name at the top
+            // Product brand and name
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     product.brand,
                     style: const TextStyle(
-                      color: Colors.blue, // Brand color
+                      color: Colors.blueAccent, // Highlight brand name
                       fontWeight: FontWeight.bold,
+                      fontSize: 14,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     product.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      color: Colors.black54, // Name color
-                      fontSize: 14,
+                      color: Colors.white, // Product name color
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
               ),
             ),
 
-            // Image in the center with placeholder
+            // Image in the center
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: ClipRRect(
-                  borderRadius:
-                      BorderRadius.circular(10), // Image rounded corners
+                  borderRadius: BorderRadius.circular(10), // Rounded corners
                   child: FadeInImage.assetNetwork(
-                    placeholder:
-                        'assets/images/loadings.jpg', // Path to placeholder image
+                    placeholder: 'assets/images/loadings.jpg',
                     image: product.imagepath[0],
-                    fit: BoxFit.cover, // Image fit style
-                    width: double.infinity, // Image takes full width
+                    fit: BoxFit.cover,
+                    width: double.infinity,
                     imageErrorBuilder: (context, error, stackTrace) =>
                         Image.asset(
-                      'assets/images/placeholder.png', // Fallback for image error
+                      'assets/images/placeholder.png',
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -82,10 +81,9 @@ class AlternativeProductWidget extends StatelessWidget {
               ),
             ),
 
-            // Price section at the bottom
+            // Price section
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -94,21 +92,20 @@ class AlternativeProductWidget extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.green,
+                      color: Colors.greenAccent,
                     ),
                   ),
                   Text(
                     'MRP: \u20B9${product.price + 200}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey,
+                      color: Colors.grey.shade500,
                       decoration: TextDecoration.lineThrough,
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 8), // Padding at the bottom for spacing
           ],
         ),
       ),

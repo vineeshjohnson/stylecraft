@@ -35,11 +35,11 @@ class CancellationReasonsPage extends StatelessWidget {
           if (state is CancelReasonSelectedState) {
             selectedReason = state.selectedreason;
           } else if (state is CancelledState) {
-            snackBar(context, 'content');
+            snackBar(context, 'Order Cancelled SuccessFully');
             Navigator.of(context).pushAndRemoveUntil(
                 (MaterialPageRoute(
                     builder: (context) => OrderCancelScreen(
-                      orderdetails: model,
+                        orderdetails: model,
                         orderId: state.model.orderid!,
                         orderDate: state.model.date,
                         orderTime: state.model.time))),

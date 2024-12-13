@@ -94,7 +94,7 @@ class PendingOrders extends StatelessWidget {
                   ),
                   separatorBuilder: (context, index) =>
                       const SizedBox(height: 20),
-                  itemCount: 5,
+                  itemCount: 3,
                 ),
               ),
             );
