@@ -61,7 +61,7 @@ class ProductWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (product.price < (product.price + 200))
+                if (product.offeritem == true)
                   Positioned(
                     top: 10,
                     left: 10,
@@ -74,8 +74,8 @@ class ProductWidget extends StatelessWidget {
                         color: Colors.redAccent,
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: const Text(
-                        'Save 20%',
+                      child: Text(
+                        'Save ${product.discountpercent.toString()}%',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 12,
@@ -120,7 +120,7 @@ class ProductWidget extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        '\u20B9${product.price + 500}',
+                        '\u20B9${product.price + ((product.price * product.discountpercent!) / 100)}',
                         style: const TextStyle(
                           color: Colors.grey,
                           decoration: TextDecoration.lineThrough,

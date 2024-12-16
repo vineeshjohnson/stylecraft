@@ -310,21 +310,23 @@ class OrderDetailedScreen extends StatelessWidget {
                             ],
                           ),
                           kheight10,
-                          Row(
-                            children: [
-                              Text(
-                                'Estimate Delivery Date',
-                                style: addressstyle,
-                              ),
-                              const SizedBox(
-                                width: 15,
-                              ),
-                              Text(
-                                ordermodel.estimatedeliverydate!,
-                                style: TextStyle(color: Colors.green),
-                              )
-                            ],
-                          ),
+                          ordermodel.completed!
+                              ? kheight10
+                              : Row(
+                                  children: [
+                                    Text(
+                                      'Estimate Delivery Date',
+                                      style: addressstyle,
+                                    ),
+                                    const SizedBox(
+                                      width: 15,
+                                    ),
+                                    Text(
+                                      ordermodel.estimatedeliverydate!,
+                                      style: const TextStyle(color: Colors.green),
+                                    )
+                                  ],
+                                ),
                         ],
                       ),
                     ),

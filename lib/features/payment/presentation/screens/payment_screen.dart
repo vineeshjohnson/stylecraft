@@ -50,12 +50,12 @@ class PaymentScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Step Indicator
-              Padding(
+              const Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
+                    EdgeInsets.symmetric(vertical: 30, horizontal: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
+                  children: [
                     _StepIndicator(
                         icon: Icons.check_circle_outline, label: 'Address'),
                     _StepDivider(),
@@ -183,10 +183,10 @@ class PaymentScreen extends StatelessWidget {
 // Step Indicator Widget
 class _StepIndicator extends StatelessWidget {
   const _StepIndicator({
-    Key? key,
+    super.key,
     required this.icon,
     required this.label,
-  }) : super(key: key);
+  });
 
   final IconData icon;
   final String label;
@@ -203,7 +203,7 @@ class _StepIndicator extends StatelessWidget {
 }
 
 class _StepDivider extends StatelessWidget {
-  const _StepDivider({Key? key}) : super(key: key);
+  const _StepDivider({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -218,12 +218,12 @@ class _StepDivider extends StatelessWidget {
 // Single Product Card Widget
 class _SingleProductCard extends StatelessWidget {
   const _SingleProductCard({
-    Key? key,
+    super.key,
     required this.product,
     required this.size,
     required this.count,
     required this.price,
-  }) : super(key: key);
+  });
 
   final ProductModel product;
   final String size;
@@ -276,12 +276,12 @@ class _SingleProductCard extends StatelessWidget {
 // Multi Product Card Widget
 class _MultiProductCard extends StatelessWidget {
   const _MultiProductCard({
-    Key? key,
+    super.key,
     required this.product,
     required this.size,
     required this.count,
     required this.price,
-  }) : super(key: key);
+  });
 
   final ProductModel product;
   final String size;
@@ -302,11 +302,11 @@ class _MultiProductCard extends StatelessWidget {
 // Payment Option Widget
 class _PaymentOption extends StatelessWidget {
   const _PaymentOption({
-    Key? key,
+    super.key,
     required this.label,
     required this.icon,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   final String label;
   final IconData icon;

@@ -30,12 +30,12 @@ class FavProducts extends StatelessWidget {
             );
           } else if (state is FavFetchedState) {
             if (state.productmodels.isEmpty) {
-              return Scaffold(
+              return const Scaffold(
                 backgroundColor: Colors.black,
                 body: Center(
                   child: Text(
                     'Your Wish List is Empty!',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -69,9 +69,9 @@ class FavProducts extends StatelessWidget {
               );
             }
           } else {
-            return Scaffold(
+            return const Scaffold(
               backgroundColor: Colors.black,
-              body: const Center(
+              body: Center(
                 child: Text(
                   'No Products Found',
                   style: TextStyle(

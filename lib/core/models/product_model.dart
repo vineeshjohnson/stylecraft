@@ -19,6 +19,7 @@ class ProductModel {
   List<String> imagepath;
   int? count;
   String? selectedsize;
+  int? discountpercent;
 
   ProductModel(
       {this.productId,
@@ -37,29 +38,30 @@ class ProductModel {
       required this.offeritem,
       required this.cod,
       required this.imagepath,
-      this.selectedsize});
+      this.selectedsize,
+      this.discountpercent});
 
   factory ProductModel.fromDocument(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
 
     return ProductModel(
-      productId: doc.id,
-      description: data['description'] ?? '',
-      price: data['price'] ?? 0,
-      category: data['category'] ?? '',
-      name: data['name'] ?? '',
-      brand: data['brand'] ?? '',
-      quantity: data['quantity'] ?? 0,
-      small: data['small'] ?? false,
-      medium: data['medium'] ?? false,
-      large: data['large'] ?? false,
-      xl: data['xl'] ?? false,
-      xxl: data['xxl'] ?? false,
-      available: data['available'] ?? false,
-      offeritem: data['offeritem'] ?? false,
-      cod: data['cod'] ?? false,
-      imagepath: List<String>.from(data['imagepath'] ?? []),
-    );
+        productId: doc.id,
+        description: data['description'] ?? '',
+        price: data['price'] ?? 0,
+        category: data['category'] ?? '',
+        name: data['name'] ?? '',
+        brand: data['brand'] ?? '',
+        quantity: data['quantity'] ?? 0,
+        small: data['small'] ?? false,
+        medium: data['medium'] ?? false,
+        large: data['large'] ?? false,
+        xl: data['xl'] ?? false,
+        xxl: data['xxl'] ?? false,
+        available: data['available'] ?? false,
+        offeritem: data['offeritem'] ?? false,
+        cod: data['cod'] ?? false,
+        imagepath: List<String>.from(data['imagepath'] ?? []),
+        discountpercent: data['discountpercent']);
   }
 
   static List<ProductModel> fromQuerySnapshot(QuerySnapshot snapshot) {

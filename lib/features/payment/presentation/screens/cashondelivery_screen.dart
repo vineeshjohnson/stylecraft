@@ -1,6 +1,5 @@
 import 'package:finalproject/core/models/product_model.dart';
 import 'package:finalproject/core/usecases/common_widgets/normal_button.dart';
-import 'package:finalproject/core/usecases/common_widgets/sized_box.dart';
 import 'package:finalproject/core/usecases/strings/strings.dart';
 import 'package:finalproject/features/payment/presentation/bloc/payment_bloc.dart';
 import 'package:finalproject/features/payment/presentation/screens/success_screen.dart';
@@ -11,7 +10,7 @@ import 'package:lottie/lottie.dart';
 import '../../../products/presentation/widgets/appbar_widget.dart';
 
 class CashOnDeliveryScreen extends StatelessWidget {
-  CashOnDeliveryScreen({
+  const CashOnDeliveryScreen({
     super.key,
     this.count,
     required this.totalAmount,
@@ -119,7 +118,7 @@ class CashOnDeliveryScreen extends StatelessWidget {
                         color: Colors.redAccent,
                       ),
                       isLoading
-                          ? CircularProgressIndicator()
+                          ? const CircularProgressIndicator()
                           : NormalButton(
                               onTap: models == null
                                   ? () {
