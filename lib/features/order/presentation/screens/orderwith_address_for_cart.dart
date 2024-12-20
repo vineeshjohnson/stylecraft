@@ -17,34 +17,51 @@ class OrderwithAddressForCart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int selectedaddress = 0;
+
     List<String> sizes = cartProductSize(products!);
+
     List<int> cartproductcount = cartProductCount(products!);
+
     List<int> cartproductprice = cartProductAmount(cartproductcount, products!);
+
     List<int> withoutdiscount =
-        cartEachPrice(cartproductcount, cartproductprice);
+        cartEachPrice(cartproductcount, cartproductprice, products!);
+
+    print(withoutdiscount);
+    int totalcartproductdiscound = withoutdiscount.reduce((a, b) => a + b);
+    print(totalcartproductdiscound);
+
     int totalcartcount = cartproductcount.reduce((a, b) => a + b);
 
-    int cartproductdiscound = 200 * totalcartcount;
     int totalcartprice = cartproductprice.reduce((a, b) => a + b);
+    print(totalcartprice);
+
+    int cartproductdiscound = totalcartproductdiscound - totalcartprice;
 
     List<List<String>> addresses = [];
+
     return BlocProvider(
       create: (context) => OrderBloc()..add(AddressaFetchingEvent()),
       child: BlocConsumer<OrderBloc, OrderState>(
         listener: (context, state) {
           if (state is CartCheckoutTriggeredState) {
             cartproductcount = state.newcounts;
-            cartproductprice = cartProductAmount(cartproductcount, products!);
-            withoutdiscount = cartEachPrice(cartproductcount, cartproductprice);
+
+            cartproductprice = cartProductAmount(state.newcounts, products!);
+
+            withoutdiscount =
+                cartEachPrice(state.newcounts, cartproductprice, products!);
+
             totalcartcount = cartproductcount.reduce((a, b) => a + b);
 
-            cartproductdiscound = 200 * totalcartcount;
+            totalcartproductdiscound = withoutdiscount.reduce((a, b) => a + b);
             totalcartprice = cartproductprice.reduce((a, b) => a + b);
+
+            cartproductdiscound = totalcartproductdiscound - totalcartprice;
           } else if (state is AddressFetchedState) {
             for (int i = 0; i < state.address.length; i++) {
               addresses.add(state.address[i].split('&'));
             }
-            print(addresses);
           } else if (state is NavigatedToAddAddressState) {
             Navigator.of(context)
                 .push(MaterialPageRoute(
@@ -320,7 +337,7 @@ class OrderwithAddressForCart extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text('Price ($totalcartcount item)'),
-                                  Text('$rupee $totalcartprice')
+                                  Text('$rupee $totalcartproductdiscound')
                                 ],
                               ),
                               kheight10,
@@ -399,7 +416,7 @@ class OrderwithAddressForCart extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '$rupee $totalcartprice',
+                          '$rupee ${totalcartprice + 40}',
                           style: const TextStyle(
                               fontSize: 30, fontWeight: FontWeight.bold),
                         ),
@@ -413,7 +430,7 @@ class OrderwithAddressForCart extends StatelessWidget {
                                       builder: (context) => PaymentScreen(
                                             address: addresses[selectedaddress],
                                             discount: cartproductdiscound,
-                                            total: totalcartprice,
+                                            total: totalcartprice + 40,
                                             sizes: sizes,
                                             productcounts: cartproductcount,
                                             productprices: cartproductprice,
@@ -538,11 +555,18 @@ List<String> cartProductSize(List<ProductModel> models) {
   return sizes;
 }
 
-List<int> cartEachPrice(List<int> productcount, List<int> productprice) {
-  List<int> discounts = [];
+List<int> cartEachPrice(
+    List<int> productcount, List<int> productprice, List<ProductModel> models) {
+  List<int> pricesWithDiscountAdded = [];
   for (int i = 0; i < productcount.length; i++) {
-    int discount = (productcount[i] * 200) + productprice[i];
-    discounts.add(discount);
+    // Calculate the total price for the product
+    int totalPrice = productprice[i];
+    // Calculate the additional value due to the discount percentage
+    int addedDiscount = (totalPrice * models[i].discountpercent!) ~/ 100;
+    // Add the discount value to the total price
+    int priceWithAddedDiscount = totalPrice + addedDiscount;
+    pricesWithDiscountAdded.add(priceWithAddedDiscount);
   }
-  return discounts;
+  print(pricesWithDiscountAdded);
+  return pricesWithDiscountAdded;
 }

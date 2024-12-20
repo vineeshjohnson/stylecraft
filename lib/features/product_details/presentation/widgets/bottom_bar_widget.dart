@@ -1,3 +1,4 @@
+import 'package:finalproject/features/cart/presentation/widgets/tabbar.dart';
 import 'package:finalproject/features/product_details/presentation/screens/product_details.dart';
 import 'package:flutter/material.dart';
 import 'package:finalproject/core/models/product_model.dart';
@@ -25,36 +26,42 @@ class BottomAppbarWidget extends StatelessWidget {
         children: [
           Expanded(
             child: ElevatedButton(
-              onPressed: () {
-                var sizes = getsizelist(productModel);
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20),
-                    ),
-                  ),
-                  builder: (context) => _buildSizeSelectorSheet(
-                    context: context,
-                    sizes: sizes,
-                    onSizeSelected: (selectedSize) {
-                      bloc.add(AddToCartEvent(
-                        productid: productModel.productId!,
-                        size: selectedSize,
-                      ));
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) =>
-                              ProductDetails(productModel: productModel)));
+              onPressed: state.iscart
+                  ? () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => FavoritesAndCartPage()));
+                    }
+                  : () {
+                      var sizes = getsizelist(productModel);
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
+                        ),
+                        builder: (context) => _buildSizeSelectorSheet(
+                          context: context,
+                          sizes: sizes,
+                          onSizeSelected: (selectedSize) {
+                            bloc.add(AddToCartEvent(
+                              productid: productModel.productId!,
+                              size: selectedSize,
+                            ));
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => ProductDetails(
+                                        productModel: productModel)));
+                          },
+                        ),
+                      ).then((_) {
+                        // Trigger the event when the bottom sheet is dismissed
+                        bloc.add(ProductDetailsFetchEvent(
+                            productmodel: productModel));
+                      });
                     },
-                  ),
-                ).then((_) {
-                  // Trigger the event when the bottom sheet is dismissed
-                  bloc.add(
-                      ProductDetailsFetchEvent(productmodel: productModel));
-                });
-              },
               style: ElevatedButton.styleFrom(
                 shape: const RoundedRectangleBorder(),
                 padding: const EdgeInsets.symmetric(vertical: 18),

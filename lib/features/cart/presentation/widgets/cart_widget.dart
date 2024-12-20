@@ -66,11 +66,11 @@ class CartListTile extends StatelessWidget {
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: SizedBox(
-              height: 80,
-              width: 80,
+              height: 90,
+              width: 60,
               child: Image.network(
                 product.imagepath[0],
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
                 errorBuilder: (context, error, stackTrace) => const Icon(
                   Icons.broken_image,
                   size: 40,
@@ -90,7 +90,7 @@ class CartListTile extends StatelessWidget {
             ),
           ),
           subtitle: Padding(
-            padding: const EdgeInsets.only(top: 4),
+            padding: const EdgeInsets.only(top: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -101,7 +101,7 @@ class CartListTile extends StatelessWidget {
                     color: Colors.grey,
                   ),
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 7),
                 Text(
                   'Price: ₹${product.price * product.count!}',
                   style: const TextStyle(

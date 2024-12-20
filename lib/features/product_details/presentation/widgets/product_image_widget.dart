@@ -20,7 +20,7 @@ class ProductImageWidget extends StatelessWidget {
       alignment: Alignment.center,
       child: SizedBox(
         width: double.infinity,
-        height: screenSize.height * 0.4, // Dynamic height based on screen size
+        height: screenSize.height * 0.5, // Dynamic height based on screen size
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
@@ -31,28 +31,34 @@ class ProductImageWidget extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.network(
-                      productModel.imagepath[index],
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return Center(
-                          child: CircularProgressIndicator(
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                                : null,
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 5, color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Image.network(
+                        productModel.imagepath[index],
+                        fit: BoxFit.fill,
+                        width: double.infinity,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: Colors.grey[300],
+                          child: const Icon(
+                            Icons.broken_image,
+                            size: 50,
+                            color: Colors.grey,
                           ),
-                        );
-                      },
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        color: Colors.grey[300],
-                        child: const Icon(
-                          Icons.broken_image,
-                          size: 50,
-                          color: Colors.grey,
                         ),
                       ),
                     ),

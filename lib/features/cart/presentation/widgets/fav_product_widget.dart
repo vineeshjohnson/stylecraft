@@ -69,7 +69,7 @@ class AlternativeProductWidget extends StatelessWidget {
                   child: FadeInImage.assetNetwork(
                     placeholder: 'assets/images/loadings.jpg',
                     image: product.imagepath[0],
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                     width: double.infinity,
                     imageErrorBuilder: (context, error, stackTrace) =>
                         Image.asset(
@@ -96,7 +96,7 @@ class AlternativeProductWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'MRP: \u20B9${product.price + 200}',
+                    'MRP: \u20B9${product.price + ((product.price * product.discountpercent!) / 100).toInt()}',
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.grey.shade500,

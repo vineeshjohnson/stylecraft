@@ -9,6 +9,7 @@ import 'package:finalproject/features/payment/presentation/screens/payment_scree
 import 'package:finalproject/features/products/presentation/widgets/appbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class OrderWithAddress extends StatelessWidget {
   const OrderWithAddress({
@@ -19,12 +20,30 @@ class OrderWithAddress extends StatelessWidget {
   final ProductModel? product;
   final String? size;
 
+  String getFormattedDate() {
+    // Get today's date
+    DateTime today = DateTime.now();
+
+    // Add 7 days
+    DateTime futureDate = today.add(const Duration(days: 7));
+
+    // Format the date as 'MMM dd, EEE' (e.g., 'Nov 20, Wed')
+    String formattedDate = DateFormat('MMM dd, EEE').format(futureDate);
+
+    return formattedDate;
+  }
+
+  void main() {
+    print(getFormattedDate()); // Example output: 'Dec 26, Thu'
+  }
+
   @override
   Widget build(BuildContext context) {
     int selectedaddress = 0;
     int productcount = 1;
     int productprice = product!.price * productcount;
-    int discount = productcount * 200;
+    int discount =
+        productcount * ((product!.price * product!.discountpercent!) ~/ 100);
     int shipping = 40;
     int totalamount = (productprice) + 40;
 
@@ -72,7 +91,7 @@ class OrderWithAddress extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 30, horizontal: 5),
-                      child: bluetracking(addresses),
+                      child: bluetracking(addresses, context),
                     ),
                     Divider(
                       thickness: addresses.isNotEmpty ? 10 : 0,
@@ -87,11 +106,18 @@ class OrderWithAddress extends StatelessWidget {
                     continuenextpagewidget(),
                     pricedetailsfunction(productcount, productprice, discount,
                         shipping, totalamount),
-                    infoboardfunction()
+                    infoboardfunction(context)
                   ],
                 ),
               ),
-              bottomNavigationBar: bottomappbarfunction(totalamount, addresses, context, selectedaddress, productcount, productprice, discount),
+              bottomNavigationBar: bottomappbarfunction(
+                  totalamount,
+                  addresses,
+                  context,
+                  selectedaddress,
+                  productcount,
+                  productprice,
+                  discount),
             ),
           );
         },
@@ -99,73 +125,93 @@ class OrderWithAddress extends StatelessWidget {
     );
   }
 
-  BottomAppBar bottomappbarfunction(int totalamount, List<List<String>> addresses, BuildContext context, int selectedaddress, int productcount, int productprice, int discount) {
+  BottomAppBar bottomappbarfunction(
+      int totalamount,
+      List<List<String>> addresses,
+      BuildContext context,
+      int selectedaddress,
+      int productcount,
+      int productprice,
+      int discount) {
     return BottomAppBar(
-                color: Colors.grey.shade300,
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '$rupee $totalamount',
-                        style: const TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold),
-                      ),
-                      NormalButton(
-                        onTap: addresses.isEmpty
-                            ? () {
-                                snackBar(context, 'Choose Any Address');
-                              }
-                            : () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => PaymentScreen(
-                                          product: product!,
-                                          address: addresses[selectedaddress],
-                                          productcount: productcount,
-                                          productprice: productprice,
-                                          discount: discount,
-                                          total: totalamount,
-                                          size: size!,
-                                        )));
-                              },
-                        buttonTxt: 'Continue',
-                        color: addresses.isNotEmpty
-                            ? Colors.orangeAccent
-                            : Colors.grey,
-                      )
-                    ],
-                  ),
-                ));
+        color: Colors.grey.shade300,
+        child: Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '$rupee $totalamount',
+                style:
+                    const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
+              NormalButton(
+                onTap: addresses.isEmpty
+                    ? () {
+                        snackBar(context, 'Choose Any Address');
+                      }
+                    : () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => PaymentScreen(
+                                  product: product!,
+                                  address: addresses[selectedaddress],
+                                  productcount: productcount,
+                                  productprice: productprice,
+                                  discount: discount,
+                                  total: totalamount,
+                                  size: size!,
+                                )));
+                      },
+                buttonTxt: 'Continue',
+                color: addresses.isNotEmpty ? Colors.orangeAccent : Colors.grey,
+              )
+            ],
+          ),
+        ));
   }
 
   ListView addressfunction(List<List<String>> addresses, int selectedaddress) {
     return ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      primary: false,
-                      itemBuilder: addresses.isNotEmpty
-                          ? (BuildContext, index) => AddressWidget(
-                                address: addresses[index],
-                                index: index,
-                                selectedindex: selectedaddress,
-                              )
-                          : (BuildContext, index) => const AddAddressWidget(),
-                      separatorBuilder: (BuildContext, Index) => kheight10,
-                      itemCount: addresses.isNotEmpty ? addresses.length : 1);
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        primary: false,
+        itemBuilder: addresses.isNotEmpty
+            ? (BuildContext, index) => AddressWidget(
+                  address: addresses[index],
+                  index: index,
+                  selectedindex: selectedaddress,
+                )
+            : (BuildContext, index) => const AddAddressWidget(),
+        separatorBuilder: (BuildContext, Index) => kheight10,
+        itemCount: addresses.isNotEmpty ? addresses.length : 1);
   }
 
-  Container infoboardfunction() {
+  Container infoboardfunction(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
       color: Colors.grey.shade200,
       width: double.infinity,
-      height: 80,
-      child: const Padding(
-        padding: EdgeInsets.all(12.0),
+      height: screenWidth * 0.2, // Dynamic height
+      child: Padding(
+        padding: EdgeInsets.all(screenWidth * 0.03), // Dynamic padding
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(Icons.assured_workload),
-            Text('Safe and Secure payment & 100 % Authentic Products')
+            Icon(
+              Icons.assured_workload,
+              size: screenWidth * 0.08, // Dynamic icon size
+              color: Colors.blueAccent,
+            ),
+            Expanded(
+              child: Text(
+                'Safe and Secure payment & 100% Authentic Products',
+                style: TextStyle(
+                  fontSize: screenWidth * 0.035, // Dynamic text size
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center, // Center-align text
+              ),
+            ),
           ],
         ),
       ),
@@ -360,7 +406,7 @@ class OrderWithAddress extends StatelessWidget {
               ],
             ),
             kheight20,
-            const Text('Delivery by Nov 20, Wed.'),
+            Text('Delivery by ${getFormattedDate()}.'),
             Text('Shipping Charge  $rupee$shipping')
           ],
         ),
@@ -368,50 +414,67 @@ class OrderWithAddress extends StatelessWidget {
     );
   }
 
-  Row bluetracking(List<List<String>> addresses) {
+  Row bluetracking(List<List<String>> addresses, BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
+        // Address Column
         Column(
           children: [
             Icon(
               addresses.isNotEmpty
                   ? Icons.check_circle_outline
                   : Icons.dangerous,
-              size: 30,
+              size: screenWidth * 0.075, // Dynamic icon size
               color: Colors.blueAccent,
             ),
-            const Text('Address')
+            Text(
+              'Address',
+              style:
+                  TextStyle(fontSize: screenWidth * 0.035), // Dynamic text size
+            ),
           ],
         ),
+        // Connecting Line
         Container(
-          height: 2,
+          height: screenWidth * 0.005, // Dynamic line thickness
           color: Colors.blueAccent,
-          width: 95,
+          width: screenWidth * 0.2, // Dynamic line width
         ),
-        const Column(
+        // Order Summary Column
+        Column(
           children: [
             Icon(
               Icons.dangerous,
-              size: 30,
+              size: screenWidth * 0.075,
               color: Colors.blueAccent,
             ),
-            Text('Order Summary')
+            Text(
+              'Order Summary',
+              style: TextStyle(fontSize: screenWidth * 0.035),
+            ),
           ],
         ),
+        // Connecting Line
         Container(
-          height: 2,
+          height: screenWidth * 0.005,
           color: Colors.blueAccent,
-          width: 95,
+          width: screenWidth * 0.2,
         ),
-        const Column(
+        // Payment Column
+        Column(
           children: [
             Icon(
               Icons.dangerous,
-              size: 30,
+              size: screenWidth * 0.075,
               color: Colors.blueAccent,
             ),
-            Text('Payment')
+            Text(
+              'Payment',
+              style: TextStyle(fontSize: screenWidth * 0.035),
+            ),
           ],
         ),
       ],

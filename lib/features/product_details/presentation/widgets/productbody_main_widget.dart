@@ -21,6 +21,7 @@ class ProductBody extends StatelessWidget {
   final ProductModel productModel;
   final PageController _pageController;
   final ProductDetailsFetchedState state;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -39,6 +40,48 @@ class ProductBody extends StatelessWidget {
         ),
         kheight10,
         PriceWidget(productModel: productModel),
+        kheight10,
+        // Discount Section inside Elevated Container
+        Row(
+          children: [
+            Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.green[100],
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.discount,
+                      color: Colors.green,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      "${productModel.discountpercent}% OFF", 
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
         kheight20,
         ProductImageWidget(
             pageController: _pageController, productModel: productModel),

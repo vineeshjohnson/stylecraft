@@ -145,7 +145,7 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
       'imagepath': userModel.imagepath,
       'cart2': {},
       'favorites': [],
-      'Wallet': 0
+      'wallet': 0
     });
   }
 

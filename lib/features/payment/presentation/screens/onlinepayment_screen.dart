@@ -64,107 +64,110 @@ class OnlinepaymentScreen extends StatelessWidget {
                 title: 'Online Payment',
               ),
             ),
-            body: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Lottie.asset("assets/images/online.json",
-                      width: double.infinity, height: 300),
-                  Container(
-                    height: 80,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                            child: Lottie.asset(
-                                'assets/images/securepayment.json')),
-                        SizedBox(
-                          width: 300,
-                          child: Text(
-                            'Your payment is 100% secure with our trusted payment gateway.',
-                            style: TextStyle(fontFamily: font5, fontSize: 16),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Lottie.asset("assets/images/online.json",
+                        width: double.infinity, height: 300),
+                    Container(
+                      height: 80,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                              child: Lottie.asset(
+                                  'assets/images/securepayment.json')),
+                          SizedBox(
+                            width: 280,
+                            child: Text(
+                              'Your payment is 100% secure with our trusted payment gateway.',
+                              style: TextStyle(fontFamily: font5, fontSize: 16),
+                            ),
                           ),
-                        ),
-                        kheight30,
-                      ],
+                          kheight30,
+                        ],
+                      ),
                     ),
-                  ),
-                  kheight30,
-                  Container(
-                    height: 80,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                            child:
-                                Lottie.asset('assets/images/fastpayment.json')),
-                        SizedBox(
-                          width: 300,
-                          child: Text(
-                            'Fast and seamless payments to save your valuable time.',
-                            style: TextStyle(fontFamily: font5, fontSize: 16),
+                    kheight30,
+                    Container(
+                      height: 80,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                              child: Lottie.asset(
+                                  'assets/images/fastpayment.json')),
+                          SizedBox(
+                            width: 280,
+                            child: Text(
+                              'Fast and seamless payments to save your valuable time.',
+                              style: TextStyle(fontFamily: font5, fontSize: 16),
+                            ),
                           ),
-                        ),
-                        kheight30,
-                      ],
+                          kheight30,
+                        ],
+                      ),
                     ),
-                  ),
-                  kheight30,
-                  Container(
-                    height: 80,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                            child: Lottie.asset('assets/images/reliable.json')),
-                        SizedBox(
-                          width: 300,
-                          child: Text(
-                            'Trusted by thousands of customers for secure and smooth transactions.',
-                            style: TextStyle(fontFamily: font5, fontSize: 16),
+                    kheight30,
+                    Container(
+                      height: 80,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                              child:
+                                  Lottie.asset('assets/images/reliable.json')),
+                          SizedBox(
+                            width: 280,
+                            child: Text(
+                              'Trusted by thousands of customers for secure and smooth transactions.',
+                              style: TextStyle(fontFamily: font5, fontSize: 16),
+                            ),
                           ),
-                        ),
-                        kheight30,
-                      ],
+                          kheight30,
+                        ],
+                      ),
                     ),
-                  ),
-                  kheight30,
-                  NormalButton(
-                    onTap: models == null
-                        ? () {
-                            context.read<PaymentBloc>().add(
-                                PaymentThroughOnlineEvent(
-                                    count!, model!.productId!, size!, address,
-                                    amount: totalamount));
-                          }
-                        : () {
-                            context.read<PaymentBloc>().add(
-                                PaymentThroughOnlineForCartEvent(
-                                    total: totalamount,
-                                    models: models!,
-                                    counts: counts!,
-                                    sizes: sizes!,
-                                    prices: prices!,
-                                    address: address));
-                          },
-                    buttonTxt: 'Pay $rupee $totalamount',
-                    color: Colors.green.shade800,
-                    widgets:
-                        isloading ? const CircularProgressIndicator() : null,
-                  )
-                ],
+                    kheight30,
+                    NormalButton(
+                      onTap: models == null
+                          ? () {
+                              context.read<PaymentBloc>().add(
+                                  PaymentThroughOnlineEvent(
+                                      count!, model!.productId!, size!, address,
+                                      amount: totalamount));
+                            }
+                          : () {
+                              context.read<PaymentBloc>().add(
+                                  PaymentThroughOnlineForCartEvent(
+                                      total: totalamount,
+                                      models: models!,
+                                      counts: counts!,
+                                      sizes: sizes!,
+                                      prices: prices!,
+                                      address: address));
+                            },
+                      buttonTxt: 'Pay $rupee $totalamount',
+                      color: Colors.green.shade800,
+                      widgets:
+                          isloading ? const CircularProgressIndicator() : null,
+                    )
+                  ],
+                ),
               ),
             ),
           );

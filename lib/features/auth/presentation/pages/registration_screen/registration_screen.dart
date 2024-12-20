@@ -80,7 +80,7 @@ class RegistrationScreen extends StatelessWidget {
                               labeltext: 'Name',
                               icon: const Icon(Icons.person),
                               validator: (value) {
-                                if (value == null || value.isEmpty) {
+                                if (value == null || value.trim().isEmpty) {
                                   return 'Please enter your name';
                                 }
                                 return null;
@@ -186,30 +186,6 @@ class RegistrationScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 20.0),
 
-                            ElevatedButton.icon(
-                              onPressed: () {},
-                              icon: Image.asset(
-                                googleimage, // Path to your Google logo image
-                                height: 30.0,
-                                width: 30.0,
-                              ),
-                              label: const Text(
-                                'Sign Up with Google',
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 15.0),
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  side: const BorderSide(color: Colors.black26),
-                                ),
-                              ),
-                            ),
                             const SizedBox(height: 20.0),
 
                             // Already Have an Account? Login

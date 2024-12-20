@@ -82,6 +82,7 @@ class LoginScreen extends StatelessWidget {
                                     ),
                                     kheight20,
                                     Textformfields(
+                                      obscureText: true,
                                       controller: passwordController,
                                       labeltext: 'Password',
                                       icon: const Icon(Icons.lock),

@@ -15,7 +15,8 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       print('object');
       emit(OrderDetailsTriggeredState(
           price: (event.model.price * event.productcount),
-          discountamount: (event.productcount * 200),
+          discountamount: event.productcount *
+              ((event.model.price * event.model.discountpercent!) ~/ 100),
           totalamount: event.model.price * event.productcount + 40,
           count: event.productcount));
       emit(SetState());
@@ -44,7 +45,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       emit(SetState());
     });
 
-     on<CartCheckoutProductDecrimentEvent>((event, emit) async {
+    on<CartCheckoutProductDecrimentEvent>((event, emit) async {
       List<int> newcount = event.counts;
       newcount[event.index] = newcount[event.index] - 1;
       emit(CartCheckoutTriggeredState(

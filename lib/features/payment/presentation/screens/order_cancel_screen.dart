@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:finalproject/core/models/ordermodel.dart';
 import 'package:finalproject/core/usecases/common_widgets/sized_box.dart';
 import 'package:finalproject/features/bottom_nav/presentation/pages/bottom_navigation_bar.dart';
@@ -11,30 +13,46 @@ class OrderCancelScreen extends StatelessWidget {
   final int? walletAmount;
   final OrderModel orderdetails;
 
-  const OrderCancelScreen(
-      {super.key,
-      required this.orderId,
-      required this.orderDate,
-      required this.orderTime,
-      this.walletAmount,
-      required this.orderdetails});
+  const OrderCancelScreen({
+    super.key,
+    required this.orderId,
+    required this.orderDate,
+    required this.orderTime,
+    this.walletAmount,
+    required this.orderdetails,
+  });
+
+  void startTimer(BuildContext context) {
+    Timer(const Duration(seconds: 5), () {
+      triggerFunction(context);
+    });
+  }
+
+  void triggerFunction(BuildContext context) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => BottomNavigationBars()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
+    startTimer(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Order Cancelled Successful"),
+        title: const Text("Order Cancelled Successfully"),
         centerTitle: true,
         backgroundColor: Colors.red,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(size.width * 0.04), // Dynamic padding
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               const Text(
-                "We Cancelled Your order Successfully",
+                "We Cancelled Your Order Successfully",
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -44,17 +62,17 @@ class OrderCancelScreen extends StatelessWidget {
               ),
               kheight10,
               SizedBox(
-                height: 350,
+                height: size.height * 0.4, // Responsive height
                 width: double.infinity,
-                child:
-                    Lottie.asset('assets/images/cancel.json', fit: BoxFit.fill),
+                child: Lottie.asset(
+                  'assets/images/cancel.json',
+                  fit: BoxFit.contain,
+                ),
               ),
               kheight10,
-              const SizedBox(height: 20),
-              kheight20,
               (orderdetails.walletpayment! || orderdetails.onlinepayment!)
                   ? const Text(
-                      "Refund Will be credit soon in your Style Craft Wallet",
+                      "Refund Will Be Credited Soon in Your Style Craft Wallet",
                       style: TextStyle(
                         fontSize: 21,
                         fontWeight: FontWeight.bold,
@@ -62,17 +80,22 @@ class OrderCancelScreen extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     )
-                  : kheight10,
+                  : const SizedBox(),
               kheight30,
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => const BottomNavigationBars()));
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const BottomNavigationBars(),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: size.width * 0.1,
+                    vertical: size.height * 0.02,
+                  ), // Dynamic padding
                 ),
                 child: const Text(
                   "Continue Shopping",

@@ -54,9 +54,7 @@ Map<String, String> brandlist = {
   'Puma': puma,
   'Levis': levis,
   'Us Polo': uspolo,
-  'U Polo': uspolo,
-  ' Polo': uspolo,
-  'olo': uspolo
+  
 };
 
 //font section

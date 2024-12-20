@@ -52,18 +52,18 @@ class ProductWidget extends StatelessWidget {
                       placeholder:
                           'assets/images/loadings.jpg', // Path to your placeholder image
                       image: product.imagepath[0],
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                       imageErrorBuilder: (context, error, stackTrace) =>
                           Image.asset(
                         'assets/images/placeholder.png', // Fallback image in case of error
-                        fit: BoxFit.cover,
+                        fit: BoxFit.fill,
                       ),
                     ),
                   ),
                 ),
                 if (product.offeritem == true)
                   Positioned(
-                    top: 10,
+                    bottom: 10,
                     left: 10,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -120,7 +120,7 @@ class ProductWidget extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        '\u20B9${product.price + ((product.price * product.discountpercent!) / 100)}',
+                        '\u20B9${product.price + (product.price * product.discountpercent!) ~/ 100}',
                         style: const TextStyle(
                           color: Colors.grey,
                           decoration: TextDecoration.lineThrough,
@@ -141,13 +141,6 @@ class ProductWidget extends StatelessWidget {
                   const SizedBox(height: 8),
 
                   // Delivery Info
-                  const Text(
-                    'Free Delivery',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.blue,
-                    ),
-                  ),
                 ],
               ),
             ),

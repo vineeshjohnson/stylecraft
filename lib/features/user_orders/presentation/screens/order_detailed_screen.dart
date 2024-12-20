@@ -135,7 +135,7 @@ class OrderDetailedScreen extends StatelessWidget {
                               height: 150,
                               child: Image.network(
                                 productmodel.imagepath[0],
-                                height: 150,
+                                height: 200,
                               ),
                             )
                           ],
@@ -249,7 +249,8 @@ class OrderDetailedScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const Text('Product MRP'),
-                              Text('$rupee${productmodel.price + 200}')
+                              Text(
+                                  '$rupee${productmodel.price + (productmodel.price * productmodel.discountpercent!) ~/ 100}')
                             ],
                           ),
                           kheight10,
@@ -265,7 +266,8 @@ class OrderDetailedScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const Text('Discount'),
-                              Text('${rupee}200')
+                              Text(
+                                  '${rupee}${((productmodel.price * productmodel.discountpercent!) ~/ 100)}')
                             ],
                           ),
                           kheight10,
@@ -310,7 +312,7 @@ class OrderDetailedScreen extends StatelessWidget {
                             ],
                           ),
                           kheight10,
-                          ordermodel.completed!
+                          (ordermodel.completed! || ordermodel.cancelled!)
                               ? kheight10
                               : Row(
                                   children: [
@@ -323,7 +325,8 @@ class OrderDetailedScreen extends StatelessWidget {
                                     ),
                                     Text(
                                       ordermodel.estimatedeliverydate!,
-                                      style: const TextStyle(color: Colors.green),
+                                      style:
+                                          const TextStyle(color: Colors.green),
                                     )
                                   ],
                                 ),

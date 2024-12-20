@@ -51,10 +51,9 @@ class PaymentScreen extends StatelessWidget {
             children: [
               // Step Indicator
               const Padding(
-                padding:
-                    EdgeInsets.symmetric(vertical: 30, horizontal: 16),
+                padding: EdgeInsets.symmetric(vertical: 30, horizontal: 16),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     _StepIndicator(
                         icon: Icons.check_circle_outline, label: 'Address'),
@@ -210,7 +209,7 @@ class _StepDivider extends StatelessWidget {
     return Container(
       height: 2,
       color: Colors.blueAccent,
-      width: 80,
+      width: 60,
     );
   }
 }

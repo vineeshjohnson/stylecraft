@@ -12,36 +12,38 @@ BottomAppBar buttonForTotal(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(
-          child: Container(
-            height: 90,
-            width: 180,
-            color: Colors.blueAccent,
-            child: Center(
-                child: Text(
-              'Total Amount \u20B9 ${state.totalprice.toString()}',
-              style: const TextStyle(fontSize: 16),
-            )),
-          ),
+        Column(
+          children: [
+            Text(
+              'Total Amount',
+              style: TextStyle(color: Colors.white),
+            ),
+            Text(
+              '\u20B9 ${state.totalprice.toString()}',
+              style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+          ],
         ),
         const SizedBox(
           width: 15,
         ),
-        Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => OrderwithAddressForCart(products: list)));
-            },
-            style: ElevatedButton.styleFrom(
-              shape: const RoundedRectangleBorder(),
-              padding: const EdgeInsets.symmetric(vertical: 18),
-              backgroundColor: Colors.orange,
-            ),
-            child: const Text(
-              'Check Out',
-              style: TextStyle(fontSize: 16),
-            ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => OrderwithAddressForCart(products: list)));
+          },
+          style: ElevatedButton.styleFrom(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 70),
+            backgroundColor: Colors.orange,
+          ),
+          child: const Text(
+            'Check Out',
+            style: TextStyle(fontSize: 20),
           ),
         ),
       ],

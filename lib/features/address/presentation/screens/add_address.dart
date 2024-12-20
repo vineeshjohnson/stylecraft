@@ -95,7 +95,7 @@ class AddAddressScreen extends StatelessWidget {
                         icon: const Icon(Icons.person),
                         labeltext: 'Full Name',
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.trim().isEmpty) {
                             return 'Please enter your full name';
                           }
                           return null;
@@ -107,7 +107,7 @@ class AddAddressScreen extends StatelessWidget {
                         icon: const Icon(Icons.phone),
                         labeltext: 'Phone Number',
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.trim().isEmpty) {
                             return 'Please enter your phone number';
                           } else if (value.length != 10) {
                             return 'Phone number must be 10 digits';
@@ -121,7 +121,7 @@ class AddAddressScreen extends StatelessWidget {
                         icon: const Icon(Icons.post_add),
                         labeltext: 'Pincode',
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.trim().isEmpty) {
                             return 'Please enter your pincode';
                           } else if (value.length != 6) {
                             return 'Pincode must be 6 digits';
@@ -135,7 +135,7 @@ class AddAddressScreen extends StatelessWidget {
                         icon: const Icon(Icons.place),
                         labeltext: 'State',
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.trim().isEmpty) {
                             return 'Please enter your state';
                           }
                           return null;
@@ -147,7 +147,7 @@ class AddAddressScreen extends StatelessWidget {
                         icon: const Icon(Icons.house),
                         labeltext: 'House Name',
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.trim().isEmpty) {
                             return 'Please enter your house name';
                           }
                           return null;
@@ -159,7 +159,7 @@ class AddAddressScreen extends StatelessWidget {
                         icon: const Icon(Icons.place_sharp),
                         labeltext: 'Road Name',
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.trim().isEmpty) {
                             return 'Please enter your road name';
                           }
                           return null;
@@ -171,7 +171,7 @@ class AddAddressScreen extends StatelessWidget {
                         icon: const Icon(Icons.label),
                         labeltext: 'District',
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.trim().isEmpty) {
                             return 'Please enter a District';
                           }
                           return null;
